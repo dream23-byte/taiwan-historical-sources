@@ -20,4 +20,4 @@
 ## 🕐 最後更新
 - 時間：2026-07-30
 - 更新者：OpenCode @ ALYSSALGGRAM
-- Git push：—（待推）
+- Git push：✅ 已推至 dream23-byte/taiwan-historical-sources
