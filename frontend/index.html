@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>臺灣歷史權威史料資料庫</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+<style>
+:root {
+  --bg: #f5f3ef;
+  --card: #ffffff;
+  --accent: #8b4513;
+  --accent-light: #a0522d;
+  --text: #1a1a1a;
+  --text-light: #666;
+  --border: #d4c5b0;
+  --tag-bg: #efe6d8;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+header {
+  background: linear-gradient(135deg, #5c3a1e, #8b4513);
+  color: #fff;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+header h1 { font-size: 1.8rem; margin-bottom: .3rem; }
+header p { opacity: .85; font-size: .95rem; }
+.container { max-width: 1100px; margin: 0 auto; padding: 1rem; }
+
+/* Filters */
+.filters {
+  background: var(--card);
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.08);
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  align-items: center;
+}
+.filters input, .filters select {
+  padding: .5rem .75rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: .9rem;
+  background: #fff;
+}
+.filters #search {
+  flex: 1;
+  min-width: 180px;
+}
+.filters select { min-width: 130px; }
+.filters .count {
+  margin-left: auto;
+  font-size: .85rem;
+  color: var(--text-light);
+  white-space: nowrap;
+}
+
+/* Results */
+#results { display: flex; flex-direction: column; gap: .75rem; }
+
+.card {
+  background: var(--card);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  transition: box-shadow .15s;
+  border-left: 4px solid var(--accent);
+}
+.card:hover { box-shadow: 0 2px 8px rgba(0,0,0,.1); }
+.card h3 { font-size: 1.05rem; color: var(--accent); margin-bottom: .3rem; }
+.card .meta {
+  font-size: .82rem;
+  color: var(--text-light);
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-bottom: .4rem;
+}
+.card .meta span { background: var(--tag-bg); padding: .15rem .5rem; border-radius: 4px; }
+.card .desc {
+  font-size: .88rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+.card .desc.truncated {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Detail panel */
+.detail {
+  display: none;
+  margin-top: .75rem;
+  padding-top: .75rem;
+  border-top: 1px solid var(--border);
+  font-size: .85rem;
+  line-height: 1.7;
+}
+.detail.open { display: block; }
+.detail .row { display: flex; gap: .5rem; padding: .2rem 0; }
+.detail .label { font-weight: 600; min-width: 90px; color: var(--text-light); }
+.detail .value { flex: 1; }
+.detail a { color: var(--accent-light); word-break: break-all; }
+.detail .tag {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  font-size: .78rem;
+  padding: .1rem .5rem;
+  border-radius: 4px;
+  margin: .1rem .2rem;
+}
+
+.loading, .error, .empty {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-light);
+}
+.error { color: #c0392b; }
+
+/* Mobile */
+@media (max-width: 600px) {
+  header h1 { font-size: 1.3rem; }
+  .filters { flex-direction: column; }
+  .filters #search { width: 100%; }
+  .filters select { width: 100%; }
+  .filters .count { margin-left: 0; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>臺灣歷史權威史料資料庫</h1>
+  <p>收錄 6 時期 · 12 類型 · 487 筆核心史料</p>
+</header>
+
+<div class="container">
+
+<div class="filters">
+  <input type="text" id="search" placeholder="搜尋史料名稱、描述、作者…">
+  <select id="periodFilter"><option value="">所有時期</option></select>
+  <select id="typeFilter"><option value="">所有類型</option></select>
+  <select id="materialFilter"><option value="">所有資料形式</option></select>
+  <span class="count" id="count">載入中…</span>
+</div>
+
+<div id="results"><div class="loading">⏳ 載入史料中…</div></div>
+
+</div>
+
+<script>
+const SUPABASE_URL = 'https://ushwjujxqvonyjumzgkp.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzaHdqdWp4cXZvbnlqdW16Z2twIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyMTQwNTMsImV4cCI6MjEwMDc5MDA1M30._pOtF2T9FQIT0z0nFNUZq6kyGH9-2hPvORZgmujBOWc';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let allData = [];
+let filteredData = [];
+
+const searchEl = document.getElementById('search');
+const periodEl = document.getElementById('periodFilter');
+const typeEl = document.getElementById('typeFilter');
+const materialEl = document.getElementById('materialFilter');
+const countEl = document.getElementById('count');
+const resultsEl = document.getElementById('results');
+
+async function load() {
+  try {
+    // Load filters
+    const [periods, types, materials, sources] = await Promise.all([
+      supabase.from('periods').select('*').order('sort_order'),
+      supabase.from('source_types').select('*').order('sort_order'),
+      supabase.from('material_types').select('*').order('id'),
+      supabase.from('source_details').select('*').order('id'),
+    ]);
+
+    if (periods.error) throw periods.error;
+    if (types.error) throw types.error;
+    if (materials.error) throw materials.error;
+    if (sources.error) throw sources.error;
+
+    // Populate filter dropdowns
+    periods.data.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.id; opt.textContent = p.name_zh;
+      periodEl.appendChild(opt);
+    });
+    types.data.forEach(t => {
+      const opt = document.createElement('option');
+      opt.value = t.id; opt.textContent = t.name_zh;
+      typeEl.appendChild(opt);
+    });
+    materials.data.forEach(m => {
+      const opt = document.createElement('option');
+      opt.value = m.code; opt.textContent = m.name_zh;
+      materialEl.appendChild(opt);
+    });
+
+    allData = sources.data;
+    applyFilters();
+  } catch (err) {
+    resultsEl.innerHTML = `<div class="error">❌ 載入失敗：${err.message}</div>`;
+  }
+}
+
+function applyFilters() {
+  const q = searchEl.value.trim().toLowerCase();
+  const pid = periodEl.value;
+  const tid = typeEl.value;
+  const mid = materialEl.value;
+
+  filteredData = allData.filter(d => {
+    // Keyword search
+    if (q) {
+      const haystack = [d.title_zh, d.description, d.subject, d.creator, d.notes].filter(Boolean).join(' ').toLowerCase();
+      if (!haystack.includes(q)) return false;
+    }
+    if (pid && d.period_name !== periodEl.options[periodEl.selectedIndex].text) return false;
+    if (tid && d.source_type_id !== Number(tid)) return false;
+    if (mid) {
+      const codes = (d.material_types || []).map(m => m.code);
+      if (!codes.includes(mid)) return false;
+    }
+    return true;
+  });
+
+  countEl.textContent = `${filteredData.length} / ${allData.length} 筆`;
+  render();
+}
+
+function render() {
+  if (!filteredData.length) {
+    resultsEl.innerHTML = '<div class="empty">📭 無符合條件的史料</div>';
+    return;
+  }
+
+  resultsEl.innerHTML = filteredData.map(d => {
+    const typeCode = d.source_type_code || '';
+    const typeColorMap = {
+      T01: '#2c3e50', T02: '#8e44ad', T03: '#2980b9', T04: '#16a085',
+      T05: '#d35400', T06: '#f39c12', T07: '#c0392b', T08: '#7f8c8d',
+      T09: '#1abc9c', T10: '#34495e', T11: '#e67e22', T12: '#27ae60',
+    };
+    const color = typeColorMap[typeCode] || var(--accent);
+
+    const materials = (d.material_types || []).map(m => `<span>${m.name}</span>`).join(' ');
+
+    return `<div class="card" onclick="toggleDetail(this)">
+      <h3>${esc(d.title_zh)}</h3>
+      <div class="meta">
+        <span style="background:${color};color:#fff">${esc(d.source_type_name || '')}</span>
+        <span>${esc(d.period_name || '')}</span>
+        <span>${esc(d.date || '')}</span>
+        ${d.creator ? `<span>${esc(d.creator)}</span>` : ''}
+        ${materials}
+      </div>
+      <div class="desc truncated">${esc(d.description || '')}</div>
+      <div class="detail">
+        ${d.description ? `<div class="row"><span class="label">描述</span><span class="value">${esc(d.description)}</span></div>` : ''}
+        ${d.creator ? `<div class="row"><span class="label">作者</span><span class="value">${esc(d.creator)}</span></div>` : ''}
+        ${d.date ? `<div class="row"><span class="label">日期</span><span class="value">${esc(d.date)}</span></div>` : ''}
+        ${d.period_name ? `<div class="row"><span class="label">時期</span><span class="value">${esc(d.period_name)}</span></div>` : ''}
+        ${d.source_type_name ? `<div class="row"><span class="label">類型</span><span class="value">${esc(d.source_type_name)} (${typeCode})</span></div>` : ''}
+        ${d.era_range ? `<div class="row"><span class="label">年代範圍</span><span class="value">${esc(d.era_range)}</span></div>` : ''}
+        ${d.geo_range ? `<div class="row"><span class="label">地理範圍</span><span class="value">${esc(d.geo_range)}</span></div>` : ''}
+        ${d.subject ? `<div class="row"><span class="label">關鍵詞</span><span class="value">${d.subject.split(';').map(s => `<span class="tag">${esc(s.trim())}</span>`).join(' ')}</span></div>` : ''}
+        ${(d.institutions || []).length ? `<div class="row"><span class="label">機構</span><span class="value">${d.institutions.map(i => `${esc(i.name)}（${i.role === 'source' ? '典藏' : i.role === 'publisher' ? '出版' : i.role === 'contributor' ? '貢獻' : i.role}）`).join('、')}</span></div>` : ''}
+        ${(d.material_types || []).length ? `<div class="row"><span class="label">資料形式</span><span class="value">${d.material_types.map(m => m.name).join('、')}</span></div>` : ''}
+        ${d.source_url && d.source_url !== '-' ? `<div class="row"><span class="label">連結</span><span class="value"><a href="${esc(d.source_url)}" target="_blank" rel="noopener">${esc(d.source_url)}</a></span></div>` : ''}
+        ${d.identifier ? `<div class="row"><span class="label">識別碼</span><span class="value">${esc(d.identifier)}</span></div>` : ''}
+        ${d.language ? `<div class="row"><span class="label">語言</span><span class="value">${esc(d.language)}</span></div>` : ''}
+        ${d.license_status ? `<div class="row"><span class="label">授權</span><span class="value">${esc(d.license_status)}${d.license_note ? '（' + esc(d.license_note) + '）' : ''}</span></div>` : ''}
+        ${d.notes ? `<div class="row"><span class="label">備註</span><span class="value">${esc(d.notes)}</span></div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleDetail(el) {
+  const detail = el.querySelector('.detail');
+  const desc = el.querySelector('.desc');
+  const isOpen = detail.classList.toggle('open');
+  desc.classList.toggle('truncated', !isOpen);
+}
+
+function esc(s) {
+  const div = document.createElement('div');
+  div.textContent = s;
+  return div.innerHTML;
+}
+
+// Event listeners
+searchEl.addEventListener('input', applyFilters);
+periodEl.addEventListener('change', applyFilters);
+typeEl.addEventListener('change', applyFilters);
+materialEl.addEventListener('change', applyFilters);
+
+load();
+</script>
+</body>
+</html>
