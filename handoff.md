@@ -38,7 +38,7 @@
 ## 🕐 最後更新
 - 時間：2026-07-30（更新 v2）
 - 更新者：OpenCode @ ALYSSALGGRAM
-- Git push：待推送
+- Git push：✅ 已推送（`a3e3384` docs/ + `a95fd70` 擴充+URL健檢）
 
 ## 📋 本期完成（2026-07-30 第二階段 — 戰後史料擴充 + URL 健檢）
 
