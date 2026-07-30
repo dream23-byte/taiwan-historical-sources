@@ -1,26 +1,30 @@
-# Handoff — 2026-07-30
+# Handoff — 2026-07-30（session 2）
 
 ## 專案階段
-**階段七已完成**，準備進入**階段八：多區域擴張**
+**階段八進行中：多區域史料擴張（中國起步—史前→秦→漢）**
 
 ## 當前狀態
-- 516 筆史料已完整匯入 Supabase（同一資料庫）
-- 專案更名為「**東亞歷史權威史料庫**」
-- 前端：https://dream23-byte.github.io/taiwan-historical-sources/
-- 資料庫容量：516 筆約 1 MB，Free Tier 上限 500 MB（充裕）
+- 臺灣 516 筆 + 中國 73 筆 = **589 筆史料**已匯入 Supabase
+- 中國 CSV 就緒：21 筆（史前）+ 18 筆（夏商周）+ 15 筆（秦）+ 20 筆（漢）= 74 筆
+- 資料庫中 CN：73 筆（跨區史料歸 TW 不重複）
+- 中國時期：夏(7)、商(8)、西周(9)、東周/春秋戰國(10)、秦(11)、漢(12)
 
-## 重要決策（本 session）
-- ✅ **同一資料庫集中管多區域史料**— 不加開第二個專案，`sources` 表導入 `region` 欄位
-- ✅ **更名** — 專案名稱、網站標題統一改為「東亞歷史權威史料庫」
+## 本 session 完成項目
+- ✅ 漢時期（西漢＋新＋東漢）period 寫入 Supabase（id=12, -202~220）
+- ✅ `metadata_中國漢.csv` 建立（20 筆：居延漢簡、馬王堆、張家山、漢長安城、漢陽陵、滿城、南越王、銀雀山、海昏侯、敦煌漢簡、懸泉汉簡、尹灣、熹平石經、南陽漢畫館、長沙簡牘、洛陽東漢帝陵、河南博物院、北大漢簡、漢書、居延新簡）
+- ✅ 10 個新機構（湖南博物院 160、漢陽陵博物院 161、南越王博物院 162、山東省文物考古研究院 163、江西省文物考古研究院 164、南京博物院 165、洛陽市文物考古研究院 166、河南博物院 167、長沙簡牘博物館 168、南陽漢畫館 169）
+- ✅ 匯入腳本 `Import-ChinaToSupabase.ps1` 更新：支援漢時期 CSV、period_id 配對規則、ExistingInstIds 含全部 169 個機構
+- ✅ 20 筆 sources(570–589) + materials + institution associations 全部匯入成功
 
 ## 注意事項
-- Supabase Free Tier 容量充裕（500 MB），短期無需升級
-- `sources.id` 為 `GENERATED ALWAYS AS IDENTITY`，INSERT 須用 `OVERRIDING SYSTEM VALUE`
-- 前端用 REST API（`fetch()` + `apikey`），不依賴 `@supabase/supabase-js`
-- `docs/index.html` 與 `frontend/index.html` 需同步更新（本 session 已同步）
-- Git push 狀態：✅ 已推（`b81c44e`）
+- Supabase Free Tier 容量充裕（500 MB）
+- `sources.id` 為 `GENERATED ALWAYS AS IDENTITY`
+- 前端兩檔案（`docs/index.html`、`frontend/index.html`）需同步更新
+- `Import-ChinaToSupabase.ps1` 現在 `ExistingInstIds` 已包含全部 169 個中國機構，增量新增時不會再錯位
+- 中國機構 ID：127–169；Source ID：517–589（73 筆）
+- 跨區史料（故宮 id=47、中研院 id=7）共用同一機構
+- 所有中國資料 `region='CN'`
 
 ## 下一步建議
-1. 在 `sources` 表新增 `region` 欄位（`VARCHAR(20)`，預設 `'TW'`）
-2. 建立跨區域史料 CSV（以現有格式為範本）
-3. 前端搜尋增加 region 篩選器
+1. 下一個中國時期：魏晉南北朝
+2. 或擴張至日本、韓國、琉球、港澳、東南亞等區域

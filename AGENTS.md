@@ -21,7 +21,9 @@
 - [x] 階段六：戰後時期 Supabase 匯入（55 筆 → sources 487 / materials 541 / institutions 840 / institutions 117 / periods 6）
 - [x] 階段七：戰後史料擴充（+29 筆 → 84 筆，補強原住民/環境/性別/勞工/文化/客家/防疫/體育等面向）
 - [x] 階段七之二：全部 516 筆 source_url 健康檢查與修正（41 筆 URL 更新）
-- [ ] 階段八：多區域史料擴張 — 於 sources 表導入 region 欄位，開始收錄非臺灣地區（含中國、港澳、琉球、東南亞等）權威史料，同一資料庫集中管
+- [x] 階段八前奏：sources 表導入 region 欄位＋periods 表導入 region 欄位，前端連動篩選
+- [x] 階段八第一站：中國史料收錄（73 筆，史前→夏商周→秦→漢，sources 517–589，periods 7–12）
+- [ ] 階段八第二站：中國史料擴張（魏晉南北朝／隋唐五代）或日本／韓國／琉球等區域
 
 ## 資料夾結構
 ```
@@ -51,8 +53,14 @@
     ├── 日治時期/
     │   ├── metadata_日治時期.csv  # 141筆
     │   └── 檢測報告.md
-    ├── Import-ToSupabase.ps1    # CSV→SQL 匯出腳本
+    ├── Import-ToSupabase.ps1    # CSV→SQL 匯出腳本（臺灣）
     ├── Import-Institutions.ps1  # 機構名稱→DB ID 對照腳本
+    ├── Import-ChinaToSupabase.ps1 # CSV→SQL 匯出腳本（中國，含 region 欄位）
+    └── 中國/
+        ├── metadata_中國史前.csv    # 21 筆
+        ├── metadata_中國夏商周.csv  # 18 筆
+        ├── metadata_中國秦.csv      # 15 筆
+        └── metadata_中國漢.csv      # 20 筆
 ├── 戰後時期/
 │   ├── metadata_戰後時期.csv         # 84筆（原55+擴充29）
 │   ├── metadata_戰後時期_expansion_v2.csv  # 擴充29筆明細

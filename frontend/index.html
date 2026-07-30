@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>東亞歷史權威史料庫</title>
 <style>
 :root {
@@ -56,6 +59,10 @@ header p { opacity: .85; font-size: .95rem; }
   min-width: 180px;
 }
 .filters select { min-width: 130px; }
+.fg { display: flex; gap: 0; }
+.fg input { width: 56px; min-width: 48px; padding: .5rem .4rem; border-right: 0; border-radius: 6px 0 0 6px; font-size: .82rem; }
+.fg select { border-radius: 0 6px 6px 0; min-width: 100px; }
+.fg input:focus + select { border-color: var(--accent); }
 .filters .count {
   margin-left: auto;
   font-size: .85rem;
@@ -143,16 +150,29 @@ header p { opacity: .85; font-size: .95rem; }
 
 <header>
   <h1>東亞歷史權威史料庫</h1>
-  <p>收錄 6 時期 · 12 類型 · 516 筆核心史料</p>
+  <p>收錄 12 時期 · 12 類型 · 589 筆核心史料 <span style="font-size:.75rem;opacity:.6">v2.0</span></p>
 </header>
 
 <div class="container">
 
 <div class="filters">
   <input type="text" id="search" placeholder="搜尋史料名稱、描述、作者…">
-  <select id="periodFilter"><option value="">所有時期</option></select>
-  <select id="typeFilter"><option value="">所有類型</option></select>
-  <select id="materialFilter"><option value="">所有資料形式</option></select>
+  <div class="fg">
+    <input type="text" class="fs" data-target="regionFilter" placeholder="地區">
+    <select id="regionFilter"><option value="">所有地區</option><option value="TW">臺灣</option><option value="CN">中國</option><option value="HK">香港</option><option value="MO">澳門</option><option value="RY">琉球</option><option value="JP">日本</option><option value="KR">韓國</option><option value="SEA">東南亞</option><option value="OTHER">其他</option></select>
+  </div>
+  <div class="fg">
+    <input type="text" class="fs" data-target="periodFilter" placeholder="時期">
+    <select id="periodFilter"><option value="">所有時期</option></select>
+  </div>
+  <div class="fg">
+    <input type="text" class="fs" data-target="typeFilter" placeholder="類型">
+    <select id="typeFilter"><option value="">所有類型</option></select>
+  </div>
+  <div class="fg">
+    <input type="text" class="fs" data-target="materialFilter" placeholder="資料">
+    <select id="materialFilter"><option value="">所有資料形式</option></select>
+  </div>
   <span class="count" id="count">載入中…</span>
 </div>
 
@@ -178,11 +198,13 @@ async function api(url) {
 
 let allData = [];
 let filteredData = [];
+let allPeriods = [];
 
 const searchEl = document.getElementById('search');
 const periodEl = document.getElementById('periodFilter');
 const typeEl = document.getElementById('typeFilter');
 const materialEl = document.getElementById('materialFilter');
+const regionEl = document.getElementById('regionFilter');
 const countEl = document.getElementById('count');
 const resultsEl = document.getElementById('results');
 
@@ -195,11 +217,8 @@ async function load() {
       api('/rest/v1/source_details?select=*&order=id'),
     ]);
 
-    periods.forEach(p => {
-      const opt = document.createElement('option');
-      opt.value = p.id; opt.textContent = p.name_zh;
-      periodEl.appendChild(opt);
-    });
+    allPeriods = periods;
+    populatePeriods(regionEl.value);
     types.forEach(t => {
       const opt = document.createElement('option');
       opt.value = t.id; opt.textContent = t.name_zh;
@@ -218,11 +237,45 @@ async function load() {
   }
 }
 
+function populatePeriods(region) {
+  periodEl.innerHTML = '<option value="">所有時期</option>';
+  const filtered = region ? allPeriods.filter(p => p.region === region) : allPeriods;
+  filtered.forEach(p => {
+    const opt = document.createElement('option');
+    opt.value = p.id; opt.textContent = p.name_zh;
+    periodEl.appendChild(opt);
+  });
+}
+
+// Region change → cascade periods
+regionEl.addEventListener('change', () => {
+  populatePeriods(regionEl.value);
+  applyFilters();
+});
+
+// Filter-search: type in any .fs input → filter options in linked select
+document.querySelectorAll('.fs').forEach(input => {
+  input.addEventListener('input', () => {
+    const sel = document.getElementById(input.dataset.target);
+    const q = input.value.trim().toLowerCase();
+    for (let i = 0; i < sel.options.length; i++) {
+      sel.options[i].style.display = (!q || sel.options[i].textContent.toLowerCase().includes(q)) ? '' : 'none';
+    }
+    let vc = 0, last = null;
+    for (let i = 0; i < sel.options.length; i++) {
+      if (sel.options[i].style.display !== 'none') { vc++; last = sel.options[i]; }
+    }
+    if (vc === 1 && last) { sel.value = last.value; }
+    applyFilters();
+  });
+});
+
 function applyFilters() {
   const q = searchEl.value.trim().toLowerCase();
   const pid = periodEl.value;
   const tid = typeEl.value;
   const mid = materialEl.value;
+  const rid = regionEl.value;
 
   filteredData = allData.filter(d => {
     // Keyword search
@@ -230,12 +283,13 @@ function applyFilters() {
       const haystack = [d.title_zh, d.description, d.subject, d.creator, d.notes].filter(Boolean).join(' ').toLowerCase();
       if (!haystack.includes(q)) return false;
     }
-    if (pid && d.period_name !== periodEl.options[periodEl.selectedIndex].text) return false;
+    if (pid && d.period_id !== Number(pid)) return false;
     if (tid && d.source_type_id !== Number(tid)) return false;
     if (mid) {
       const codes = (d.material_types || []).map(m => m.code);
       if (!codes.includes(mid)) return false;
     }
+    if (rid && d.region !== rid) return false;
     return true;
   });
 
@@ -258,6 +312,9 @@ function render() {
     };
     const color = typeColorMap[typeCode] || 'var(--accent)';
 
+    const regionMap = { TW:'臺灣', CN:'中國', HK:'香港', MO:'澳門', RY:'琉球', JP:'日本', KR:'韓國', SEA:'東南亞', OTHER:'其他' };
+    const regionLabel = regionMap[d.region] || d.region || '';
+
     const materials = (d.material_types || []).map(m => `<span>${m.name}</span>`).join(' ');
 
     return `<div class="card" onclick="toggleDetail(this)">
@@ -265,6 +322,7 @@ function render() {
       <div class="meta">
         <span style="background:${color};color:#fff">${esc(d.source_type_name || '')}</span>
         <span>${esc(d.period_name || '')}</span>
+        ${regionLabel ? `<span>${regionLabel}</span>` : ''}
         <span>${esc(d.date || '')}</span>
         ${d.creator ? `<span>${esc(d.creator)}</span>` : ''}
         ${materials}
@@ -275,6 +333,7 @@ function render() {
         ${d.creator ? `<div class="row"><span class="label">作者</span><span class="value">${esc(d.creator)}</span></div>` : ''}
         ${d.date ? `<div class="row"><span class="label">日期</span><span class="value">${esc(d.date)}</span></div>` : ''}
         ${d.period_name ? `<div class="row"><span class="label">時期</span><span class="value">${esc(d.period_name)}</span></div>` : ''}
+        ${regionLabel ? `<div class="row"><span class="label">地區</span><span class="value">${regionLabel}</span></div>` : ''}
         ${d.source_type_name ? `<div class="row"><span class="label">類型</span><span class="value">${esc(d.source_type_name)} (${typeCode})</span></div>` : ''}
         ${d.era_range ? `<div class="row"><span class="label">年代範圍</span><span class="value">${esc(d.era_range)}</span></div>` : ''}
         ${d.geo_range ? `<div class="row"><span class="label">地理範圍</span><span class="value">${esc(d.geo_range)}</span></div>` : ''}
@@ -309,6 +368,7 @@ searchEl.addEventListener('input', applyFilters);
 periodEl.addEventListener('change', applyFilters);
 typeEl.addEventListener('change', applyFilters);
 materialEl.addEventListener('change', applyFilters);
+regionEl.addEventListener('change', applyFilters);
 
 load();
 </script>
