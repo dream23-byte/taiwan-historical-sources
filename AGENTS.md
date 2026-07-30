@@ -17,7 +17,8 @@
 - [x] 階段四第二站：清領時期完整收錄（135 筆，1683–1895，分清領前期/後期，11 類 T 類型）
 - [x] 階段四第三站：日治時期完整收錄（141 筆，1895–1945，12 類 T 類型全覆蓋）
 - [x] 階段五：Supabase 正規化資料庫匯入（432 筆 → 5 正規化表）
-- [ ] 階段四最終站：戰後時期（1945–迄今）
+- [x] 階段四最終站：戰後時期完整收錄（55 筆，1945–迄今，T01/T02/T03/T04/T05/T06/T07/T09/T10/T11/T12 共 11 類）
+- [x] 階段六：戰後時期 Supabase 匯入（55 筆 → sources 487 / materials 541 / institutions 840 / institutions 117 / periods 6）
 
 ## 資料夾結構
 ```
@@ -49,8 +50,11 @@
     │   └── 檢測報告.md
     ├── Import-ToSupabase.ps1    # CSV→SQL 匯出腳本
     ├── Import-Institutions.ps1  # 機構名稱→DB ID 對照腳本
+    ├── 戰後時期/
+    │   ├── metadata_戰後時期.csv  # 55筆
+    │   └── append_postwar.sql    # 追加匯入 SQL
     ├── import_sources.sql       # 匯出 SQL（機構+來源+source_material）
-    ├── import_institutions.sql  # 機構關聯匯出 SQL（707 筆）
+    ├── import_institutions.sql  # 機構關聯匯出 SQL（840 筆）
 
 ## 同步層級（本專案初始化至第 2 層級）
 
