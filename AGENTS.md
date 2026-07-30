@@ -19,6 +19,8 @@
 - [x] 階段五：Supabase 正規化資料庫匯入（432 筆 → 5 正規化表）
 - [x] 階段四最終站：戰後時期完整收錄（55 筆，1945–迄今，T01/T02/T03/T04/T05/T06/T07/T09/T10/T11/T12 共 11 類）
 - [x] 階段六：戰後時期 Supabase 匯入（55 筆 → sources 487 / materials 541 / institutions 840 / institutions 117 / periods 6）
+- [x] 階段七：戰後史料擴充（+29 筆 → 84 筆，補強原住民/環境/性別/勞工/文化/客家/防疫/體育等面向）
+- [x] 階段七之二：全部 516 筆 source_url 健康檢查與修正（41 筆 URL 更新）
 
 ## 資料夾結構
 ```
@@ -50,9 +52,11 @@
     │   └── 檢測報告.md
     ├── Import-ToSupabase.ps1    # CSV→SQL 匯出腳本
     ├── Import-Institutions.ps1  # 機構名稱→DB ID 對照腳本
-    ├── 戰後時期/
-    │   ├── metadata_戰後時期.csv  # 55筆
-    │   └── append_postwar.sql    # 追加匯入 SQL
+├── 戰後時期/
+│   ├── metadata_戰後時期.csv         # 84筆（原55+擴充29）
+│   ├── metadata_戰後時期_expansion_v2.csv  # 擴充29筆明細
+│   ├── append_postwar.sql            # 原55筆匯入 SQL
+│   └── append_postwar_v2.sql         # 擴充29筆匯入 SQL
     ├── import_sources.sql       # 匯出 SQL（機構+來源+source_material）
     ├── import_institutions.sql  # 機構關聯匯出 SQL（840 筆）
 

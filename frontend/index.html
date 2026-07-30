@@ -4,8 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>臺灣歷史權威史料資料庫</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-</script>
 <style>
 :root {
   --bg: #f5f3ef;
@@ -165,7 +163,18 @@ header p { opacity: .85; font-size: .95rem; }
 <script>
 const SUPABASE_URL = 'https://ushwjujxqvonyjumzgkp.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzaHdqdWp4cXZvbnlqdW16Z2twIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyMTQwNTMsImV4cCI6MjEwMDc5MDA1M30._pOtF2T9FQIT0z0nFNUZq6kyGH9-2hPvORZgmujBOWc';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const headers = {
+  'apikey': SUPABASE_ANON_KEY,
+  'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+  'Accept': 'application/json',
+};
+
+async function api(url) {
+  const res = await fetch(SUPABASE_URL + url, { headers });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
 
 let allData = [];
 let filteredData = [];
@@ -179,37 +188,30 @@ const resultsEl = document.getElementById('results');
 
 async function load() {
   try {
-    // Load filters
     const [periods, types, materials, sources] = await Promise.all([
-      supabase.from('periods').select('*').order('sort_order'),
-      supabase.from('source_types').select('*').order('sort_order'),
-      supabase.from('material_types').select('*').order('id'),
-      supabase.from('source_details').select('*').order('id'),
+      api('/rest/v1/periods?select=*&order=sort_order'),
+      api('/rest/v1/source_types?select=*&order=sort_order'),
+      api('/rest/v1/material_types?select=*&order=id'),
+      api('/rest/v1/source_details?select=*&order=id'),
     ]);
 
-    if (periods.error) throw periods.error;
-    if (types.error) throw types.error;
-    if (materials.error) throw materials.error;
-    if (sources.error) throw sources.error;
-
-    // Populate filter dropdowns
-    periods.data.forEach(p => {
+    periods.forEach(p => {
       const opt = document.createElement('option');
       opt.value = p.id; opt.textContent = p.name_zh;
       periodEl.appendChild(opt);
     });
-    types.data.forEach(t => {
+    types.forEach(t => {
       const opt = document.createElement('option');
       opt.value = t.id; opt.textContent = t.name_zh;
       typeEl.appendChild(opt);
     });
-    materials.data.forEach(m => {
+    materials.forEach(m => {
       const opt = document.createElement('option');
       opt.value = m.code; opt.textContent = m.name_zh;
       materialEl.appendChild(opt);
     });
 
-    allData = sources.data;
+    allData = sources;
     applyFilters();
   } catch (err) {
     resultsEl.innerHTML = `<div class="error">❌ 載入失敗：${err.message}</div>`;
@@ -254,7 +256,7 @@ function render() {
       T05: '#d35400', T06: '#f39c12', T07: '#c0392b', T08: '#7f8c8d',
       T09: '#1abc9c', T10: '#34495e', T11: '#e67e22', T12: '#27ae60',
     };
-    const color = typeColorMap[typeCode] || var(--accent);
+    const color = typeColorMap[typeCode] || 'var(--accent)';
 
     const materials = (d.material_types || []).map(m => `<span>${m.name}</span>`).join(' ');
 
