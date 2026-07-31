@@ -1,7 +1,7 @@
-# Handoff — 2026-07-31（session 11）
+# Handoff — 2026-07-31（session 12）
 
 ## 專案階段
-**階段八第十站完成：中國 465 筆 source_url 健康檢查（64 異常全數處置）**
+**階段八第十站完成：中國 465 筆 source_url 健康檢查（64 異常全數處置）＋Supabase 同步驗證完成（44 筆差異全數更新，CSV↔DB 0 差異）**
 
 ## 當前狀態
 - 臺灣 516 筆 + 中國 465 筆 = **981 筆史料**已匯入 Supabase（sources max_id=1074，institutions max_id=248）
@@ -15,15 +15,10 @@
 - 臺灣時期（region='TW'）：史前(1，**已改名「臺灣史前（1624年以前）」**)、荷西(2)、明鄭(3)、清領(4)、日治(5)、戰後(6)（已標註西元年分）
 
 ## 本 session 完成項目
-- ✅ **中國 465 筆 source_url 健康檢查完成**：url_results.csv 檢查 136 筆（涵蓋全部中國史料網址），64 筆異常全數處置
-- ✅ **22 組網址替換（42 處）**，寫入 12 個 CSV：
-  - 機構官方網址更替：csmb.org.cn→chinajiandu.cn（漢/魏晉）、erlitou.com→eltxdmuseum.com（夏商周）、tjbwg.com→tjbwg.cn（遼）、wenzimuseum.com→wzbwg.com（夏商周）、hebkaogu.com→hbswwkg.com（夏商周/漢/魏晉/北宋）、peoplepress.com.cn→pph166.com（共和國）、shanggu.com→guji.com.cn（史前）、nywmuseum.com→nywmuseum.org.cn（漢）、sdkaogu.cn→sdswwkgyjy.com（漢）、scskaogu.com→sckg.com（隋唐五代/五代十國）、lnkaogu.com/lnkgw.com→lnkgyjy.com.cn（遼/史前）、shxkaogu.com→shxkgy.cn（漢）、jxkaogu.com→hhhmuseum.cn（漢）、zhouyuan.org→zhouyuanmuseum.com（夏商周）、shxkgy.com→shxkgy.cn（隋唐五代/唐）、history.cssn.cn→cssn.cn（夏商周）
-  - 中研院：ihp.sinica.edu.tw→www1.ihp.sinica.edu.tw（民國×2）、mh.sinica.edu.tw→www.mh.sinica.edu.tw（民國×7）、shac.net.cn https→http（民國×8＋共和國×1）
-  - 專案網址：archive.tsinghua.edu.cn→dag.tsinghua.edu.cn（民國）、history.cuhk.edu.hk guodian→新路徑（夏商周）、yungang.org→baike.baidu.com/museum/yungangshiku（魏晉）
-- ✅ **4 筆標「–」＋備註**（無現行官方網站）：唐蕃會盟碑×2（隋唐五代/唐，zha.gov.cn 失效、大昭寺無官網）、放馬灘秦簡（秦，gswwkg.com 失效、甘肅考古所無官網）、里耶秦簡數位研究資料庫（秦，lyqj.hnu.edu.cn 已停站）
-- ✅ **14 筆保留**（DNS 正常、境外連線暫時受阻或 403/412 反爬，非真失效）：anyangyinxu.cn、shxkg.com、shanximuseum.com、zjmuseum.cn、kaogu.cn、kaogu.net.cn、hljmuseum.com、hubeimuseum.net、cea.gov.cn、cnpc.com.cn、nhc.gov.cn、whc.unesco.org/zh/list/449、ncha.gov.cn、npc.gov.cn 等
-- ✅ 中途 PowerShell 陣列誤操作（`@(@())` 壓平致 h→t 誤替）已用 git restore 還原並重新套用，驗證無殘留
-- ✅ 12 個 CSV、50 行變更（utf-8 BOM 狀態均保留原狀）
+- ✅ **民國/共和國檢測報告產出**：`sources\中國\檢測報告_中華民國.md`（41 筆，11/12 類缺 T02）、`sources\中國\檢測報告_中華人民共和國.md`（62 筆，12/12 類全覆蓋）
+- ✅ **Supabase 匯入驗證完成**：以 REST API 下載 DB 全部 465 筆 CN source_url 與 CSV 比對，找到 **44 筆差異**（皆為本次健康檢查已改、DB 未同步之網址，含 mh.sinica.edu.tw→www.mh、shac.net.cn https→http、csmb→chinajiandu、sckg、hbswwkg 等）
+- ✅ **44 筆 DB source_url 全部更新**（以 CSV 為準，RETURNING 驗證 44/44 成功），複查 **CSV↔DB 0 差異**
+- ✅ 比對工具：`csv_url_map.tsv`（CSV 465 筆）→ `sync_diff.sql`（44 筆 UPDATE）已存 `C:\Users\myaly\AppData\Local\Temp\opencode\`
 
 ## 注意事項
 - Supabase Free Tier 容量充裕（500 MB）
@@ -39,7 +34,6 @@
 - 網站所有文字敘述以繁體中文呈現
 
 ## 下一步建議
-1. **中國 CSV 變更尚未 commit**（12 檔、50 行），建議先 commit＋push 保存；後續可重跑 Supabase 匯入確認無誤
-2. 民國/共和國時期**檢測報告**尚未產出（階段八第九站遺留）
-3. 階段九（未排程）：擴張至**日本、韓國、琉球、港澳、東南亞**等區域（需新 region 代碼與機構盤點）
-4. 前端 GitHub Pages 部署後標題連動顯示「26 時期 · 12 類型 · 981 筆核心史料」（需 commit＋push 後自動更新）
+1. **中國 CSV 變更＋檢測報告＋handoff 尚未 commit**（12 CSV＋2 檢測報告），建議先 commit＋push 保存
+2. 階段九（未排程）：擴張至**日本、韓國、琉球、港澳、東南亞**等區域（需新 region 代碼與機構盤點）——港澳可優先（香港檔案館/澳門檔案館/公共圖書館數位館藏）
+3. 前端 GitHub Pages 部署後標題連動顯示「26 時期 · 12 類型 · 981 筆核心史料」（需 commit＋push 後自動更新）
