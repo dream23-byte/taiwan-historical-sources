@@ -1,39 +1,39 @@
-# Handoff — 2026-07-31（session 12）
+# Handoff — 2026-08-01（session 13）
 
 ## 專案階段
-**階段八第十站完成：中國 465 筆 source_url 健康檢查（64 異常全數處置）＋Supabase 同步驗證完成（44 筆差異全數更新，CSV↔DB 0 差異）**
+**階段八第九站之後續：港澳史料收錄完成（32 筆）＋Supabase 匯入完成（periods 27–32＋institutions 249–271＋sources 1075–1106＋關聯全數就位）**
 
 ## 當前狀態
-- 臺灣 516 筆 + 中國 465 筆 = **981 筆史料**已匯入 Supabase（sources max_id=1074，institutions max_id=248）
-- 中國 CSV 現有 19 份：**史前 28**（21＋7 新） + 夏商周 17 + 秦 15 + 漢 20 + 魏晉南北朝 32 + 隋 9 + 唐 24 + 五代十國 11 + 北宋 24 + 南宋 24 + **遼 14＋西夏 6（metadata_中國遼.csv）** + **金 24（metadata_中國金.csv）** + **元 26（metadata_中國元.csv）** + **元補充 18（metadata_中國元_補充.csv）** + **明 32（metadata_中國明.csv）** + **清 32（metadata_中國清.csv）** + **中華民國 41（metadata_中國中華民國.csv）** + **中華人民共和國 62（metadata_中國中華人民共和國.csv）**
-- 中國時期（region='CN'，均已標註西元年分）：
-  - **中國史前(24，約前2070年以前)＝10**、夏(7，約前2070–前1600)＝1、商(8，約前1600–前1046)＝10、西周(9，前1046–前771)＝2、東周/春秋戰國(10，前770–前256)＝6
-  - 秦(11，含楚漢相爭，前221–前202)＝15、漢(12，西漢＋新＋東漢，前202–220)＝20、魏晉南北朝(13，220–589)＝32
-  - 隋(15，581–618)＝9、唐(14，618–907)＝24、五代十國(16，907–960)＝11
-  - 北宋(17，960–1127)＝24、南宋(18，1127–1279)＝24、遼(19，含西夏，916–1227)＝**26**、金(20，1115–1234)＝**24**、元(21，1271–1368)＝**44**、明(22，1368–1644)＝**32**、清(23，1644–1912)＝**32**
-  - **中華民國(25，1912–1949)＝41**、**中華人民共和國(26，1949–迄今)＝62**
-- 臺灣時期（region='TW'）：史前(1，**已改名「臺灣史前（1624年以前）」**)、荷西(2)、明鄭(3)、清領(4)、日治(5)、戰後(6)（已標註西元年分）
+- 臺灣 516 筆 + 中國 465 筆 + **香港 18 筆 + 澳門 14 筆 = 1013 筆史料**已匯入 Supabase（sources max_id=1106，institutions max_id=271，periods 27–32）
+- 港澳 CSV 位於 `sources\港澳\`：`metadata_香港.csv`（18 筆 HK-ST-01–18）、`metadata_澳門.csv`（14 筆 MO-ST-01–14），23 欄與中國檔同構（含 region「香港」/「澳門」）
+- 港澳時期（region='HK'/'MO'，已標註西元年分）：
+  - **香港英治(27，1841–1941)＝13**、**香港日佔(28，1941–1945)＝1**、**香港戰後(29，1945–1997)＝7**、**香港特區(30，1997–迄今)＝1**（註：1089/1090/1092 之 date 跨「迄今」者以 era_range 主段歸期）
+  - **澳門葡治(31，1557–1999)＝12**、**澳門特區(32，1999–迄今)＝2**
+- 港澳機構 23 個（id 249–271）：港 15（香港政府檔案處 258、香港政府 257、香港公共圖書館 254、香港歷史博物館 261、東華三院檔案館 251、香港天文台 255、香港房屋委員會 256、香港電影資料館 260、香港中文大學圖書館 253、古物古蹟辦事處 250、香港特別行政區政府 259、英國殖民地部 252）+ 澳 8（澳門檔案館 271、澳門文化局 264、澳門政府 265、澳門海關 266、澳門中央圖書館 263、澳門基金會 269、澳門博物館 270、天主教澳門教區 249、澳門特別行政區政府 267、澳門特別行政區政府印務局 268、葡萄牙東波塔國家檔案館 262）
+- 港澳資料類型關聯：source_materials 47 筆、source_institutions 99 筆（HK/MO 全數正確對應）
+- 授權全數 ARR；香港 9 類 T（T01 7 筆最重）、澳門 8 類 T；資料類型 4 類全覆蓋（含影音 T04＝電影資料館）
 
 ## 本 session 完成項目
-- ✅ **民國/共和國檢測報告產出**：`sources\中國\檢測報告_中華民國.md`（41 筆，11/12 類缺 T02）、`sources\中國\檢測報告_中華人民共和國.md`（62 筆，12/12 類全覆蓋）
-- ✅ **Supabase 匯入驗證完成**：以 REST API 下載 DB 全部 465 筆 CN source_url 與 CSV 比對，找到 **44 筆差異**（皆為本次健康檢查已改、DB 未同步之網址，含 mh.sinica.edu.tw→www.mh、shac.net.cn https→http、csmb→chinajiandu、sckg、hbswwkg 等）
-- ✅ **44 筆 DB source_url 全部更新**（以 CSV 為準，RETURNING 驗證 44/44 成功），複查 **CSV↔DB 0 差異**
-- ✅ 比對工具：`csv_url_map.tsv`（CSV 465 筆）→ `sync_diff.sql`（44 筆 UPDATE）已存 `C:\Users\myaly\AppData\Local\Temp\opencode\`
+- ✅ 撰寫 `metadata_香港.csv`（18 筆）＋`metadata_澳門.csv`（14 筆），23 欄一致（含 region 欄）
+- ✅ 機構根網址全部 HTTP 200 驗證（港 15＋澳 11＋葡萄牙東波塔）
+- ✅ 兩份檢測報告：`sources\港澳\檢測報告_香港.md`、`sources\港澳\檢測報告_澳門.md`
+- ✅ `Import-HKMoToSupabase.ps1`（v1，仿中國 v2 模式，period id 依識別碼前綴 HK-/MO- 判定，region 同）正式執行產出 `import_hkmo_sources.sql`
+- ✅ Supabase 插入：periods 27–32（`ON CONFLICT (id) DO NOTHING`）＋institutions 249–271（`ON CONFLICT (name_zh) DO NOTHING`）
+- ✅ Supabase 插入：sources 1075–1106（32 筆，`OVERRIDING SYSTEM VALUE`）＋source_materials 47＋source_institutions 99（materials 一次成功；inst_links 因 1092 後多餘逗號 syntax error 拆兩段重跑）
+- ✅ setval 校正（sources_id_seq→1106）＋驗證查詢全部通過（HK 18/MO 14；機構 23；materials 47；links 99；periods 6）
 
 ## 注意事項
 - Supabase Free Tier 容量充裕（500 MB）
 - `sources.id`、`periods.id`、`institutions.id` 均為 `GENERATED ALWAYS AS IDENTITY`，匯入需 `OVERRIDING SYSTEM VALUE`
-- **periods_id_seq 曾落後**（max_id=22 但 seq 停在 12），插入前已用 setval 修正；未來新增時期若遇 duplicate key，先 `SELECT setval('periods_id_seq', (SELECT MAX(id) FROM periods))`
-- **他方 Agent 無本地 CSV**（應在另一台電腦作業）；若他方機器同步 repo，需留意 `import_china_sources.sql` 含全部增量
-- `import_china_sources.sql` 為增量匯出檔（現含 965–1074），重跑安全（ON CONFLICT＋identifier 去重）
-- `Import-ChinaToSupabase.ps1` 全量模式已具 identifier 去重：會自動跳過 DB 中已存在之識別碼，可安心重跑
-- **史前 CSV 為 22 欄（無列尾時代欄）且 LF 行尾**；其餘中國 CSV 資料行 23 欄（行尾格式 `,"<時代>")`）
-- 所有中國資料 `region='CN'`
-- 西夏史料以「西夏」為時代字首歸入 period 19（遼，含西夏）；「明」→22；「清」→23；「舊石器/新石器/史前」→24（跨時代「舊石器時代–/新石器時代–」→NULL）；「中華民國」→25；「中華人民共和國」→26
-- **T02 類型須用全名「方志與輿圖」**（CSV 若寫「方志」會 mapping 失敗得 NULL）；「傳世文獻」→ T07（既有慣例）
-- 網站所有文字敘述以繁體中文呈現
+- **新增時期前先檢查 periods_id_seq**：`SELECT setval('periods_id_seq', (SELECT MAX(id) FROM periods))`（過去曾落後造成 duplicate key）
+- `import_hkmo_sources.sql` 為增量匯出檔（sources 段自第 44 行），重跑安全（ON CONFLICT＋identifier 去重）
+- **港澳 CSV 資料行 23 欄**（含 region「香港」/「澳門」），與中國檔同構；史前臺灣 CSV 例外為 22 欄
+- 「傳世文獻」→ T07（既有慣例）；T02 須用全名「方志與輿圖」
+- 港澳時期 date/era_range 填「香港英治時期（…）」「澳門葡治時期（…）」等全稱；跨期史料（如澳門博物館、澳門虛擬圖書館）以 era_range 主段歸期
+- 澳門特區公報正確網址為 `https://www.bo.dsaj.gov.mo/`（非 gs.gov.mo）；「葡萄牙國家檔案館」已統一為「葡萄牙東波塔國家檔案館」
+- `websearch`（Exa API）於本 session 大部分時間不可用；澳門印務局網址是連線失敗時以僅有的一次成功 websearch 找到
 
 ## 下一步建議
-1. **中國 CSV 變更＋檢測報告＋handoff 尚未 commit**（12 CSV＋2 檢測報告），建議先 commit＋push 保存
-2. 階段九（未排程）：擴張至**日本、韓國、琉球、港澳、東南亞**等區域（需新 region 代碼與機構盤點）——港澳可優先（香港檔案館/澳門檔案館/公共圖書館數位館藏）
-3. 前端 GitHub Pages 部署後標題連動顯示「26 時期 · 12 類型 · 981 筆核心史料」（需 commit＋push 後自動更新）
+1. **本次變更尚未 commit**（`sources\港澳\` 2 CSV＋2 檢測報告＋Import-HKMoToSupabase.ps1＋import_hkmo_sources.sql＋handoff.md），建議先 commit＋push 保存
+2. 前端 GitHub Pages 標題連動顯示「32 時期 · 12 類型 · 1013 筆核心史料」（含港澳）
+3. 階段九續站：**日本、韓國、琉球、東南亞**等區域（需新 region 代碼＋機構盤點）；港澳既有 6 期可視需求補充擴充
