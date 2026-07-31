@@ -34,6 +34,7 @@
 - [x] 階段八第六站之二：元補充收錄（+18 筆，sources 883–900，period 21；元26→44 筆，對外貿易 8＋雜曲文學 10；總 sources 807）
 - [x] 階段八第七站：明朝收錄（32 筆，sources 901–932，period 22＝明（1368–1644），institutions 196=故宮博物院；10 類 T 類型）
 - [x] 階段八第八站：清朝收錄（32 筆，sources 933–964，period 23＝清（1644–1912），code=qing-dynasty，全數對應既有機構；11 類 T 類型）
+- [x] 階段八第八站之二：中國史前補強（新增 period 24＝中國史前（約前2070年以前）；TW period 1 改名「臺灣史前（1624年以前）」明確區分；補收 7 筆考古遺址 sources 965–971＋institutions 197–204；46 筆遼金元 CSV 回寫；中國累計 362 筆）
 
 ## 資料夾結構
 ```
@@ -67,7 +68,7 @@
     ├── Import-Institutions.ps1  # 機構名稱→DB ID 對照腳本
     ├── Import-ChinaToSupabase.ps1 # CSV→SQL 匯出腳本（中國，含 region 欄位）
     └── 中國/
-        ├── metadata_中國史前.csv    # 21 筆
+        ├── metadata_中國史前.csv    # 28 筆（21＋7 考古遺址補充）
         ├── metadata_中國夏商周.csv  # 18 筆
         ├── metadata_中國秦.csv      # 15 筆
         ├── metadata_中國漢.csv      # 20 筆

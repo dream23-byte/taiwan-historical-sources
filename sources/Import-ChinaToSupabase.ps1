@@ -267,6 +267,11 @@ foreach ($filename in $CsvFiles) {
         $era = if ($row.年代範圍 -and $row.年代範圍 -ne '–' -and $row.年代範圍 -ne '﹣') { $row.年代範圍 } else { '' }
         $periodId = $null
         switch -Wildcard ($era) {
+            '舊石器時代–*' { $periodId = $null; break }
+            '新石器時代–*' { $periodId = $null; break }
+            '舊石器*' { $periodId = 24; break }
+            '新石器*' { $periodId = 24; break }
+            '史前*' { $periodId = 24; break }
             '夏*' { $periodId = 7; break }
             '商*' { $periodId = 8; break }
             '夏–商*' { $periodId = 7; break }
