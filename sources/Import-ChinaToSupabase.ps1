@@ -1,8 +1,18 @@
 # ============================================================
-# Import-ChinaToSupabase.ps1 v1
+# Import-ChinaToSupabase.ps1 v2（純增量模式）
 # 將中國史料 CSV 匯入 Supabase（產生 INSERT SQL）
 # Metadata v1.3 → 正規化資料庫（含 region 欄位）
+#
+# 用法：
+#   .\Import-ChinaToSupabase.ps1                                # 處理所有 CSV
+#   .\Import-ChinaToSupabase.ps1 -CsvFile "metadata_魏晉南北朝.csv"  # 只處理單一時期
+#   .\Import-ChinaToSupabase.ps1 -DryRun                        # 只看不執行
 # ============================================================
+
+param(
+    [string]$CsvFile,
+    [switch]$DryRun
+)
 
 $ErrorActionPreference = 'Stop'
 
@@ -11,14 +21,9 @@ $OutputDir   = Split-Path -Parent $PSCommandPath
 $OutputSql   = Join-Path $OutputDir "import_china_sources.sql"
 $CsvDir      = Join-Path $OutputDir "中國"
 
-# === 時期對照 ===
-$PeriodMap = @{
-    '中國史前+神話時代' = $null
-    '夏時期' = 7
-    '商時期' = 8
-    '西周時期' = 9
-    '東周/春秋戰國' = 10
-}
+# === Supabase 連線資訊 ===
+$SupabaseUrl = "https://ushwjujxqvonyjumzgkp.supabase.co"
+$AnonKey     = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzaHdqdWp4cXZvbnlqdW16Z2twIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyMTQwNTMsImV4cCI6MjEwMDc5MDA1M30._pOtF2T9FQIT0z0nFNUZq6kyGH9-2hPvORZgmujBOWc"
 
 # === T 分類對照 ===
 $TypeMap = @{
@@ -34,6 +39,7 @@ $TypeMap = @{
     '產業與經濟實錄'      = 10
     '教育與醫療史'       = 11
     '自然與環境背景'     = 12
+    '傳世文獻'           = 7
 }
 
 # === M 分類對照 ===
@@ -149,19 +155,99 @@ function Get-NonInstitutionDesc {
     return ($parts | Select-Object -Unique) -join '; '
 }
 
-# === 主程式 ===
-Write-Host "=== 開始匯入中國史料 CSV ==="
+# === 從 Supabase 查詢當前狀態（純增量核心） ===
+function Get-SupabaseCurrentId {
+    param([string]$table, [string]$column = "id")
+    $url = "$SupabaseUrl/rest/v1/$table`?select=$column&order=$column.desc&limit=1"
+    $headers = @{ "apikey" = $AnonKey; "Authorization" = "Bearer $AnonKey" }
+    $result = Invoke-RestMethod -Uri $url -Headers $headers -ContentType "application/json"
+    if ($result -and $result.Count -gt 0) { return [int]$result[0].$column }
+    return 0
+}
 
-$CsvFiles = @(
+function Get-SupabaseInstitutions {
+    $url = "$SupabaseUrl/rest/v1/institutions?select=id,name_zh&order=id"
+    $headers = @{ "apikey" = $AnonKey; "Authorization" = "Bearer $AnonKey" }
+    $result = Invoke-RestMethod -Uri $url -Headers $headers -ContentType "application/json"
+    $map = @{}
+    if ($result) {
+        foreach ($row in $result) { $map[$row.name_zh] = [int]$row.id }
+    }
+    return $map
+}
+
+function Get-SupabaseIdentifiers {
+    $url = "$SupabaseUrl/rest/v1/sources?select=identifier&identifier=not.is.null"
+    $headers = @{ "apikey" = $AnonKey; "Authorization" = "Bearer $AnonKey" }
+    $result = Invoke-RestMethod -Uri $url -Headers $headers -ContentType "application/json"
+    $set = @{}
+    if ($result) {
+        foreach ($row in $result) { if ($row.identifier) { $set[$row.identifier] = $true } }
+    }
+    return $set
+}
+
+# === 決定要處理哪些 CSV ===
+$allCsvFiles = @(
     "metadata_中國史前.csv",
     "metadata_中國夏商周.csv",
     "metadata_中國秦.csv",
-    "metadata_中國漢.csv"
+    "metadata_中國漢.csv",
+    "metadata_中國魏晉南北朝.csv",
+    "metadata_中國隋.csv",
+    "metadata_中國唐.csv",
+    "metadata_中國五代十國.csv",
+    "metadata_中國北宋.csv",
+    "metadata_中國南宋.csv",
+    "metadata_中國遼.csv",
+    "metadata_中國金.csv",
+    "metadata_中國元.csv"
 )
+
+if ($CsvFile) {
+    if (-not (Test-Path (Join-Path $CsvDir $CsvFile))) {
+        Write-Error "找不到檔案: 中國\$CsvFile"
+        exit 1
+    }
+    $CsvFiles = @($CsvFile)
+    Write-Host "增量模式：只處理 $CsvFile"
+} else {
+    $CsvFiles = $allCsvFiles
+    Write-Host "完整模式：處理所有中國 CSV（已存在的會用 ON CONFLICT 跳過）"
+}
+
+# === 連線 Supabase ===
+Write-Host "`n=== 查詢 Supabase 當前狀態 ==="
+try {
+    if (-not $DryRun) {
+        $ExistingInstIds = Get-SupabaseInstitutions
+        $ExistingIdentifiers = Get-SupabaseIdentifiers
+        $MaxSourceId     = Get-SupabaseCurrentId "sources"
+        $MaxInstId       = Get-SupabaseCurrentId "institutions"
+        Write-Host "sources MAX(id) = $MaxSourceId"
+        Write-Host "institutions MAX(id) = $MaxInstId"
+        Write-Host "institutions 總數 = $($ExistingInstIds.Count)"
+        Write-Host "已存在 identifier 數 = $($ExistingIdentifiers.Count)"
+    } else {
+        Write-Host "（乾執行模式，不查詢 Supabase）"
+        $ExistingInstIds = @{}
+        $ExistingIdentifiers = @{}
+        $MaxSourceId = 0
+        $MaxInstId = 0
+    }
+} catch {
+    Write-Error "無法連線 Supabase：$_"
+    Write-Warning "請檢查網路連線或 Supabase project 狀態"
+    exit 1
+}
+
+# === 主程式 ===
+Write-Host "`n=== 開始匯入中國史料 CSV ==="
 
 $allSources = @()
 $allInstitutions = @{}
 $totalRows = 0
+$skipCount = 0
 
 foreach ($filename in $CsvFiles) {
     $csvPath = Join-Path $CsvDir $filename
@@ -169,16 +255,12 @@ foreach ($filename in $CsvFiles) {
     $data = Import-Csv $csvPath -Encoding UTF8
     $totalRows += $data.Count
 
-    # 從 CSV 判斷所屬時期
-    $periodName = switch ($filename) {
-        'metadata_中國史前.csv' { '中國史前+神話時代' }
-        'metadata_中國夏商周.csv' { '夏時期' }
-        'metadata_中國秦.csv' { '秦（含楚漢相爭）' }
-        'metadata_中國漢.csv' { '漢（西漢＋新＋東漢）' }
-    }
-
     foreach ($row in $data) {
-        # 依年份範圍決定實際 period_id
+        if ($row.識別碼 -and $ExistingIdentifiers.ContainsKey($row.識別碼)) {
+            $skipCount++
+            continue
+        }
+
         $era = if ($row.年代範圍 -and $row.年代範圍 -ne '–' -and $row.年代範圍 -ne '﹣') { $row.年代範圍 } else { '' }
         $periodId = $null
         switch -Wildcard ($era) {
@@ -197,6 +279,27 @@ foreach ($filename in $CsvFiles) {
             '東漢*' { $periodId = 12; break }
             '漢*' { $periodId = 12; break }
             '漢–*' { $periodId = 12; break }
+            '三國*' { $periodId = 13; break }
+            '西晉*' { $periodId = 13; break }
+            '東晉*' { $periodId = 13; break }
+            '東晉–*' { $periodId = 13; break }
+            '晉*' { $periodId = 13; break }
+            '南北朝*' { $periodId = 13; break }
+            '南朝*' { $periodId = 13; break }
+            '北朝*' { $periodId = 13; break }
+            '北魏*' { $periodId = 13; break }
+            '魏晉*' { $periodId = 13; break }
+            '十六國*' { $periodId = 13; break }
+            '隋唐*' { $periodId = 14; break }
+            '隋*' { $periodId = 15; break }
+            '唐*' { $periodId = 14; break }
+            '五代*' { $periodId = 16; break }
+            '北宋*' { $periodId = 17; break }
+            '南宋*' { $periodId = 18; break }
+            '遼*' { $periodId = 19; break }
+            '西夏*' { $periodId = 19; break }
+            '金*' { $periodId = 20; break }
+            '元*' { $periodId = 21; break }
             default { $periodId = $null }
         }
 
@@ -256,65 +359,16 @@ foreach ($filename in $CsvFiles) {
 }
 
 Write-Host "總筆數: $totalRows"
-Write-Host "不重複機構數: $($allInstitutions.Count)"
+Write-Host "已存在（跳過）: $skipCount"
+Write-Host "（本批次）不重複機構數: $($allInstitutions.Count)"
+Write-Host "（資料庫）現有機構數: $($ExistingInstIds.Count)"
 
 $instList = $allInstitutions.Keys | Sort-Object
-Write-Host "`n===== 機構清單 ====="
+Write-Host "`n===== 本批次機構清單 ====="
 $instList | ForEach-Object { Write-Host "  $_" }
-Write-Host "=====================`n"
+Write-Host "==========================`n"
 
-# === 現有機構 ID（已存在資料庫中） ===
-$ExistingInstIds = @{
-    '中央研究院' = 7
-    '國立故宮博物院' = 47
-    'University of Pittsburgh' = 127
-    '二里頭夏都遺址博物館' = 128
-    '三星堆博物館' = 129
-    '上海古籍出版社' = 130
-    '上海博物館' = 131
-    '中國文字博物館' = 132
-    '中國社會科學院' = 133
-    '中國社會科學院考古研究所' = 134
-    '中國社會科學院圖書館' = 135
-    '中國國家博物館' = 136
-    '中國國家圖書館' = 137
-    '中華書局' = 138
-    '匹茲堡大學' = 139
-    '文物出版社' = 140
-    '北京大學' = 141
-    '良渚博物院' = 142
-    '周原博物館' = 143
-    '河北省文物考古研究院' = 144
-    '香港中文大學' = 145
-    '殷墟博物館' = 146
-    '清華大學' = 147
-    '敦煌研究院' = 148
-    '湖北省博物館' = 149
-    '遼寧省文物考古研究院' = 150
-    '寶雞青銅器博物院' = 151
-    '甘肅省文物考古研究所' = 152
-    '西安博物院' = 153
-    '里耶秦簡博物館' = 154
-    '武漢大學' = 155
-    '秦始皇帝陵博物院' = 156
-    '陝西省考古研究院' = 157
-    '湖北省文物考古研究院' = 158
-    '湖南大學' = 159
-    '湖南博物院' = 160
-    '漢陽陵博物院' = 161
-    '南越王博物院' = 162
-    '山東省文物考古研究院' = 163
-    '江西省文物考古研究院' = 164
-    '南京博物院' = 165
-    '洛陽市文物考古研究院' = 166
-    '河南博物院' = 167
-    '長沙簡牘博物館' = 168
-    '南陽漢畫館' = 169
-}
-$MaxInstId   = 169
-$MaxSourceId = 589
-
-# === 建立機構名稱→ID 對照（現有機構用真實 ID，新機構從 MaxInstId+1 開始） ===
+# === 建立機構名稱→ID 對照 ===
 $instNameToId = @{}
 $nextInstId = $MaxInstId + 1
 foreach ($instName in $instList) {
@@ -327,12 +381,20 @@ foreach ($instName in $instList) {
 }
 $maxNewInstId = $nextInstId - 1
 
+if ($DryRun) {
+    Write-Host "`n===== 乾執行摘要 ====="
+    Write-Host "新機構數: $(($instList | Where-Object { -not $ExistingInstIds.ContainsKey($_) }).Count)"
+    Write-Host "新 sources 數: $($allSources.Count)"
+    Write-Host "（不產生 SQL 檔案）"
+    exit 0
+}
+
 # === 產生 INSERT SQL ===
 $sb = [System.Text.StringBuilder]::new()
 
 $sb.AppendLine("-- ============================================================")
-$sb.AppendLine("-- 東亞歷史權威史料庫 — 中國史料匯入 SQL")
-$sb.AppendLine("-- 由 Import-ChinaToSupabase.ps1 v1 自動產生")
+$sb.AppendLine("-- 東亞歷史權威史料庫 — 中國史料匯入 SQL（增量模式）")
+$sb.AppendLine("-- 由 Import-ChinaToSupabase.ps1 v2 自動產生")
 $sb.AppendLine("-- ============================================================")
 $sb.AppendLine()
 
@@ -431,7 +493,7 @@ $content = $sb.ToString()
 [System.IO.File]::WriteAllText($OutputSql, $content, [System.Text.UTF8Encoding]::new($true))
 
 Write-Host "`nSQL 已寫入: $OutputSql"
-Write-Host "Sources: $sourceId 筆"
+Write-Host "Sources: $sourceId 筆（新增 $($allSources.Count) 筆）"
 Write-Host "Institutions: $(($instNameToId.Keys | Where-Object { -not $ExistingInstIds.ContainsKey($_) }).Count) 個新機構"
 Write-Host "Source-Material 關聯: $($sourceMaterialRows.Count) 筆"
 Write-Host "Source-Institution 關聯: $($uniqueRows.Count) 筆"

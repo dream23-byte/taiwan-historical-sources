@@ -150,7 +150,7 @@ header p { opacity: .85; font-size: .95rem; }
 
 <header>
   <h1>東亞歷史權威史料庫</h1>
-  <p>收錄 12 時期 · 12 類型 · 589 筆核心史料 <span style="font-size:.75rem;opacity:.6">v2.0</span></p>
+  <p>收錄 <span id="statsText">資料統計載入中…</span> <span style="font-size:.75rem;opacity:.6">v2.0</span></p>
 </header>
 
 <div class="container">
@@ -231,6 +231,7 @@ async function load() {
     });
 
     allData = sources;
+    document.getElementById('statsText').textContent = `${allPeriods.length} 時期 · ${types.length} 類型 · ${allData.length} 筆核心史料`;
     applyFilters();
   } catch (err) {
     resultsEl.innerHTML = `<div class="error">❌ 載入失敗：${err.message}</div>`;
