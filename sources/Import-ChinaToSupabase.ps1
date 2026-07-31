@@ -201,7 +201,9 @@ $allCsvFiles = @(
     "metadata_中國南宋.csv",
     "metadata_中國遼.csv",
     "metadata_中國金.csv",
-    "metadata_中國元.csv"
+    "metadata_中國元.csv",
+    "metadata_中國元_補充.csv",
+    "metadata_中國明.csv"
 )
 
 if ($CsvFile) {
@@ -300,6 +302,7 @@ foreach ($filename in $CsvFiles) {
             '西夏*' { $periodId = 19; break }
             '金*' { $periodId = 20; break }
             '元*' { $periodId = 21; break }
+            '明*' { $periodId = 22; break }
             default { $periodId = $null }
         }
 
