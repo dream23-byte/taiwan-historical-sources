@@ -8,59 +8,89 @@
 SELECT setval('institutions_id_seq', 195);
 
 -- === 2. 主要史料 ===
-INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (873, '拉施特《史集》（波斯文世界史）', '拉施特（波斯）', '元（1311）', 21, 7, '中央研究院', 'CN-ST-YUAN-JAMI-01', 'https://hanchi.ihp.sinica.edu.tw/', 'zh', '波斯伊利汗國宰相拉施特奉敕編《史集》，成於1311年，為波斯文世界通史巨著，其「蒙古史」部分據蒙古文秘籍與口述編纂，記成吉思汗祖先系譜與蒙元史事，與《蒙古秘史》《元史》互證補缺，為研究蒙古帝國史最珍貴之域外史料', '史集;拉施特;波斯文;伊利汗國;蒙古帝國', '元', '全中國', NULL, '蒙古秘史;元史;耶律楚材西遊錄', '中央研究院', NULL, '2026-07-31', 'UNCLEAR', '漢譯本已出版', '已收錄 metadata', NULL, '波斯文記蒙古帝國之巨著', 'CN') ON CONFLICT (id) DO NOTHING;
-INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (874, '新安沉船與元代海上貿易', '中國國家博物館', '元（1323）', 21, 7, '中國國家博物館', 'CN-ST-YUAN-XINAN-01', NULL, 'zh', '新安沉船為1975年於韓國新安海域打撈之元代中國海船，船長34米，出水中國瓷器二萬餘件（龍泉窯、景德鎮窯）、銅錢八百餘萬枚及胡椒、香料，據貨物推定為1323年自慶元（寧波）駛往日本之貿易船，為元朝海上貿易規模最完整之沉船實證', '新安沉船;元代沉船;龍泉窯;海上貿易;慶元港', '元', '浙江寧波（出航）;韓國新安', NULL, '泉州後渚沉船;南宋海外貿易與市舶司史料;元青花瓷器', '中國國家博物館', NULL, '2026-07-31', 'ARR', '出水文物分藏中韓，整理報告已出版', '已收錄 metadata', NULL, '元代海上貿易之最完整沉船實證', 'CN') ON CONFLICT (id) DO NOTHING;
-INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (875, '泉州後渚沉船（宋元海船）', '泉州海外交通史博物館', '1974', 21, 7, '泉州海外交通史博物館', 'CN-ST-YUAN-HOUZHU-01', NULL, 'zh', '1974年於泉州後渚港發掘之宋元海船殘體，船身長24米，為福船型尖底海船，13艙水密分隔，船中出土香料（沉香、龍腦）、陶瓷與木牌簽，現陳列於泉州海外交通史博物館，為中國古代造船技術與海上絲路航運之珍貴實物', '泉州後渚;福船;宋元海船;造船;香料', '元', '福建泉州', NULL, '新安沉船;南宋海外貿易與市舶司史料', '泉州海外交通史博物館', NULL, '2026-07-31', 'ARR', '館藏數位影像依館方規定', '已收錄 metadata', NULL, '中國古造船技術之珍貴實物', 'CN') ON CONFLICT (id) DO NOTHING;
-INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (876, '元代京杭大運河與水利工程史料', '中央研究院', '元（13世紀）', 21, 1, '中央研究院', 'CN-ST-YUAN-YUNHE-01', 'https://hanchi.ihp.sinica.edu.tw/', 'zh', '元世祖至元年間開鑿會通河、通惠河，貫通京杭大運河全線，使南糧北運直達大都，並設都水監治河，郭守敬主持通惠河工程、開引白浮泉水入城，史料見《元史·河渠志》與《農桑輯要》，為元朝漕運體系與水利工程之核心記載', '京杭大運河;通惠河;會通河;郭守敬;漕運', '元', '全中國', NULL, '金中都水關遺址;元史', '中央研究院', NULL, '2026-07-31', 'UNCLEAR', '漢籍全文資料庫需申請帳號密碼', '已收錄 metadata', NULL, '京杭運河全線貫通之關鍵', 'CN') ON CONFLICT (id) DO NOTHING;
-INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (877, '元朝行省制度與地方行政史料', '中央研究院', '元（1260–1368）', 21, 1, '中央研究院', 'CN-ST-YUAN-XINGSHENG-01', 'https://hanchi.ihp.sinica.edu.tw/', 'zh', '元朝首創行中書省（行省）制度，除腹里外分設嶺北、遼陽、河南江北、陝西、四川、甘肅、雲南、江浙、江西、湖廣等行省，統轄路府州縣，開中國省制之先河，兼行宣政院轄吐蕃、征東行省轄高麗等特殊建制，史料見《元史·地理志》《百官志》', '行省制度;行中書省;元朝;地方行政;省制', '元', '全中國', NULL, '元史;元典章;元朝與高麗關係史料', '中央研究院', NULL, '2026-07-31', 'UNCLEAR', '漢籍全文資料庫需申請帳號密碼', '已收錄 metadata', NULL, '中國省制之起源', 'CN') ON CONFLICT (id) DO NOTHING;
-INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (878, '八思巴文碑刻與文獻（國字）', '北京市文物研究所', '元（1269–）', 21, 8, '北京市文物研究所', 'CN-ST-YUAN-BASIPA-01', NULL, 'zh', '元世祖命八思巴創制蒙古新字（八思巴字），至元六年（1269）頒行作為「國字」拼寫各民族語言，現存八思巴字碑刻以居庸關雲臺六體石刻、各地聖旨碑及八思巴字錢鈔為代表，為蒙古語文與元朝多語文並行之制度實證', '八思巴字;蒙古新字;居庸關雲臺;碑刻;國字', '元', '全中國', NULL, '女真文字石刻;元史;泉州穆斯林石刻', '北京市文物研究所', NULL, '2026-07-31', 'ARR', '文保單位影像依相關規定使用', '已收錄 metadata', NULL, '元朝國字之碑刻實證', 'CN') ON CONFLICT (id) DO NOTHING;
-INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (879, '北京妙應寺白塔（阿尼哥）', '北京市文物研究所', '元至元十六年（1279）', 21, 5, '北京市文物研究所', 'CN-ST-YUAN-BAITA-01', NULL, 'zh', '北京妙應寺白塔建於元至元十六年（1279），為尼泊爾工匠阿尼哥主持營造之覆缽式磚石塔，通高50.9米，為元大都現存最重要之地面建築，象徵蒙元與西藏佛教之密切關係，亦為中國與南亞建築文化交流之見證', '妙應寺白塔;阿尼哥;覆缽式塔;藏傳佛教;尼泊爾', '元', '北京', NULL, '元大都城址考古;金代佛教遺存', '北京市文物研究所', NULL, '2026-07-31', 'ARR', '文保單位影像依相關規定使用', '已收錄 metadata', NULL, '尼泊爾工匠主持之元大都地標', 'CN') ON CONFLICT (id) DO NOTHING;
-INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (880, '耶律楚材《西遊錄》（蒙古西征紀行）', '耶律楚材', '元（1228）', 21, 7, '中央研究院', 'CN-ST-YUAN-XIYOULU-01', 'https://hanchi.ihp.sinica.edu.tw/', 'zh', '耶律楚材於成吉思汗西征期間扈從西行六萬餘里，撰《西遊錄》記西域道里、山川、城郭與風俗，兼述蒙元興起，為13世紀上半葉中國人記中亞西域之最重要行記，與邱處機《長春真人西遊記》並為蒙元經略西域之第一手史料', '西遊錄;耶律楚材;蒙古西征;西域;行記', '元', '中亞', NULL, '蒙古秘史;史集;馬可波羅遊記', '中央研究院', NULL, '2026-07-31', 'UNCLEAR', '漢籍全文資料庫需申請帳號密碼', '已收錄 metadata', NULL, '蒙元經略西域之第一手行記', 'CN') ON CONFLICT (id) DO NOTHING;
-INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (881, '洪洞水神廟明應王殿元雜劇壁畫', '山西省古建築保護研究所', '元泰定元年（1324）', 21, 5, '山西省古建築保護研究所', 'CN-ST-YUAN-BIHUA-01', NULL, 'zh', '山西洪洞廣勝寺水神廟明應王殿南壁東側元雜劇演出壁畫，繪於元泰定元年（1324），橫幅畫面中戲臺、演員行當、伴奏樂隊俱全，橫額書「大行散樂忠都秀在此作場」，為元雜劇演劇實況之唯一存世壁畫，中國戲曲史之國寶級圖像', '洪洞水神廟;明應王殿;元雜劇;壁畫;戲曲史', '元', '山西臨汾（洪洞）', NULL, '元刊雜劇三十種;趙城金藏', '山西省古建築保護研究所', NULL, '2026-07-31', 'ARR', '文保單位影像依相關規定使用', '已收錄 metadata', NULL, '元雜劇演劇實況之唯一壁畫', 'CN') ON CONFLICT (id) DO NOTHING;
-INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (882, '元朝與高麗、日本關係史料', '中央研究院', '元（1274–1368）', 21, 1, '中央研究院', 'CN-ST-YUAN-GAOLI-01', 'https://hanchi.ihp.sinica.edu.tw/', 'zh', '元朝兩度東征日本（1274、1281），並設征東行省轄高麗、遼東，日本鎌倉幕府拒命，元日關係以「文永·弘安之役」與往還國書為要；高麗則與元王室聯姻通婚。史料見《元史·日本傳》《高麗史》及元人文集，為東亞國際關係史之重要文獻', '元日關係;征東行省;高麗;蒙古來襲;東亞', '元', '東亞', NULL, '元史;史集;遣隋使', '中央研究院', NULL, '2026-07-31', 'UNCLEAR', '漢籍全文資料庫需申請帳號密碼', '已收錄 metadata', NULL, '蒙古兩度征日之東亞外交', 'CN') ON CONFLICT (id) DO NOTHING;
+INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (883, '汪大淵《島夷誌略》（元代海外貿易總志）', '汪大淵', '元至正九年（1349）', 21, 7, '中央研究院', 'CN-ST-YUAN-DAOYI-01', 'https://hanchi.ihp.sinica.edu.tw/', 'zh', '元末汪大淵兩次附舶遠航，周遊南洋、印度洋百餘國港口，《島夷誌略》成於至正九年（1349），逐國記其道里、物產、貨價、風俗與互市情形，為元代海外貿易與亞洲地理交通最重要之第一手漢文總志', '島夷誌略;汪大淵;海外貿易;南洋;印度洋', '元', '東南亞;印度洋沿岸', NULL, '馬可波羅遊記;周達觀真臘風土記;元市舶司制度', '中央研究院', NULL, '2026-07-31', 'UNCLEAR', '漢籍全文資料庫需申請帳號密碼', '已收錄 metadata', NULL, '元代海外貿易文獻之冠', 'CN') ON CONFLICT (id) DO NOTHING;
+INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (884, '周達觀《真臘風土記》（吳哥王朝）', '周達觀', '元元貞二年（1296）', 21, 7, '中央研究院', 'CN-ST-YUAN-ZHENLA-01', 'https://hanchi.ihp.sinica.edu.tw/', 'zh', '元貞元年（1295）元廷遣使招諭真臘（今柬埔寨），周達觀隨行，居吳哥一年，歸撰《真臘風土記》記其城郭、宮室、風俗、物產、貿易凡四十則，為現存唯一記吳哥王朝盛況之當代漢文文獻，亦是元代外交與東南亞交通之實錄', '真臘風土記;周達觀;吳哥;柬埔寨;元朝外交', '元', '柬埔寨（吳哥）', NULL, '島夷誌略;元與安南、佔城、緬甸關係史料', '中央研究院', NULL, '2026-07-31', 'UNCLEAR', '漢籍全文資料庫需申請帳號密碼', '已收錄 metadata', NULL, '記吳哥王朝之唯一當代漢籍', 'CN') ON CONFLICT (id) DO NOTHING;
+INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (885, '鄂多立克《東遊錄》（義大利教士東方行記）', '鄂多立克（Odoric of Pordenone）', '元（1318–1330）', 21, 7, '中華書局', 'CN-ST-YUAN-ODORIC-01', NULL, 'zh', '義大利方濟各會修士鄂多立克約1318年東行，經印度、南洋至廣州，歷泉州、福州、杭州，北抵大都，留居三載後西歸，口述成《東遊錄》，記元朝都會繁盛與風俗，與馬可波羅並為歐洲人親歷元朝之最重要行記，何高濟中譯本收於《中外關係史名著譯叢》', '鄂多立克;東遊錄;方濟各會;泉州;大都', '元', '廣州;泉州;杭州;大都', '何高濟（中譯）', '馬可波羅遊記;也里可溫（景教／天主教）', '中華書局', NULL, '2026-07-31', 'ARR', '《中外關係史名著譯叢》出版品', '已收錄 metadata', NULL, '繼馬可波羅後最重要歐洲人東方行記', 'CN') ON CONFLICT (id) DO NOTHING;
+INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (886, '《大德南海志》殘卷（元初廣州海外貿易）', '陳大震', '元大德八年（1304）', 21, 2, '中華書局', 'CN-ST-YUAN-NANHAI-01', NULL, 'zh', '元大德八年陳大震纂《南海志》（廣州府志），今僅存卷六至卷七殘卷，詳列番國名稱（西至今波斯、阿拉伯、非洲諸地）、市舶物貨與廣州港市舶抽分，為元代廣州海外貿易與諸蕃國地名最集中之早期記載', '大德南海志;南海志;廣州;市舶;番國', '元', '廣州', NULL, '元市舶司制度;島夷誌略', '中華書局', NULL, '2026-07-31', 'ARR', '《宋元方志叢刊》點校本已出版', '已收錄 metadata', NULL, '元代廣州海外交通之珍貴殘卷', 'CN') ON CONFLICT (id) DO NOTHING;
+INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (887, '元代市舶司制度與海外貿易則例', '脫脫／王元恭', '元（1277–1349）', 21, 1, '中央研究院', 'CN-ST-YUAN-SHIJISI-01', 'https://hanchi.ihp.sinica.edu.tw/', 'zh', '元承宋制置市舶司於泉州、慶元（寧波）、廣州、杭州、澉浦諸港，後定制三司，《元史·食貨志·市舶》載抽分則例與舶商綱首制度，《至正四明續志》載慶元市舶物貨細目，為元代海外貿易管理體制之官方系統記載', '市舶司;抽分;慶元;泉州;海外貿易制度', '元', '泉州;慶元;廣州;杭州', NULL, '元史;汪大淵島夷誌略;新安沉船', '中央研究院', NULL, '2026-07-31', 'UNCLEAR', '漢籍全文資料庫需申請帳號密碼', '已收錄 metadata', NULL, '元代海上貿易管理制度之核心', 'CN') ON CONFLICT (id) DO NOTHING;
+INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (888, '元與安南、佔城、緬甸（蒲甘）關係史料', '脫脫／黎崱', '元（1257–1300）', 21, 1, '中央研究院', 'CN-ST-YUAN-ANNAM-01', 'https://hanchi.ihp.sinica.edu.tw/', 'zh', '元世祖朝三度征安南（陳朝）、遣兵佔城、征緬甸蒲甘王朝，後罷兵復通朝貢；《元史·安南傳》《占城傳》《緬傳》及越南《大越史記全書》載其事，為元代中國與中南半島諸國戰爭、朝貢與貿易往來之系統文獻', '元越關係;佔城;蒲甘;緬甸;朝貢', '元', '越南;柬埔寨;緬甸', NULL, '元朝與高麗、日本關係史料;真臘風土記', '中央研究院', NULL, '2026-07-31', 'UNCLEAR', '漢籍全文資料庫需申請帳號密碼', '已收錄 metadata', NULL, '元代經略中南半島之關鍵史料', 'CN') ON CONFLICT (id) DO NOTHING;
+INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (889, '蒲壽庚與泉州蕃商集團', '泉州海外交通史博物館', '宋末元初（1276–）', 21, 7, '泉州海外交通史博物館', 'CN-ST-YUAN-PUSHOUGENG-01', NULL, 'zh', '宋末元初泉州阿拉伯裔蒲壽庚世掌市舶三十載，降元後家族壟斷泉州海外貿易，元代泉州聚落蕃商（阿拉伯、波斯、印度、占城人）蕃坊蕃學林立，蒲氏家譜、碑刻與《島夷誌略》《癸辛雜識》等載其事迹，為元代蕃商經營中國貿易之縮影', '蒲壽庚;泉州;蕃商;市舶司;海上絲路', '元', '福建泉州', NULL, '泉州海外交通史跡（伊斯蘭石刻）;島夷誌略', '泉州海外交通史博物館', NULL, '2026-07-31', 'ARR', '館藏數位影像依館方規定', '已收錄 metadata', NULL, '元代泉州蕃商集團之核心人物', 'CN') ON CONFLICT (id) DO NOTHING;
+INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (890, '也里可溫（景教／天主教）在元朝史料', '中央研究院', '元（1289–1368）', 21, 7, '中央研究院', 'CN-ST-YUAN-ERKEWEN-01', 'https://hanchi.ihp.sinica.edu.tw/', 'zh', '「也里可溫」為元代對景教（基督教聶斯脫里派）與天主教之總稱，至元二十六年（1289）設崇福司掌其事；義大利方濟各會士孟高維諾奉教皇命抵大都，1307年建汗八里總主教區並譯《新約》為蒙古文；房山十字寺與泉州景教石刻為存世遺物，為元朝與歐洲宗教文化往來之見證', '也里可溫;景教;天主教;孟高維諾;崇福司', '元', '大都;泉州', NULL, '鄂多立克東遊錄;泉州穆斯林石刻', '中央研究院', NULL, '2026-07-31', 'UNCLEAR', '漢籍全文資料庫需申請帳號密碼', '已收錄 metadata', NULL, '元代與歐洲宗教交流之見證', 'CN') ON CONFLICT (id) DO NOTHING;
+INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (891, '《錄鬼簿》（鍾嗣成，元雜劇作家目錄）', '鍾嗣成', '元至順元年（1330）', 21, 7, '中央研究院', 'CN-ST-YUAN-LUGUIBU-01', 'https://hanchi.ihp.sinica.edu.tw/', 'zh', '元鍾嗣成撰《錄鬼簿》二卷，著錄元代雜劇、散曲作家一百五十二人、劇目四百五十餘種，各繫小傳與《凌波仙》弔詞，為元雜劇最系統之作家作品目錄，亦是中國戲曲史之開山著作，續編《錄鬼簿續編》並存', '錄鬼簿;鍾嗣成;元雜劇;曲目;作家傳記', '元', '全中國', NULL, '元雜劇（關漢卿、王實甫等）;元曲選', '中央研究院', NULL, '2026-07-31', 'UNCLEAR', '漢籍全文資料庫需申請帳號密碼', '已收錄 metadata', NULL, '元雜劇作家作品之百科', 'CN') ON CONFLICT (id) DO NOTHING;
+INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (892, '《元曲選》（臧懋循）與《元刊雜劇三十種》', '臧懋循', '明（1615）', 21, 7, '中央研究院', 'CN-ST-YUAN-YUANQUXUAN-01', 'https://hanchi.ihp.sinica.edu.tw/', 'zh', '明臧懋循編《元曲選》（《元人百種曲》）收元雜劇百種，為通行最廣之元雜劇選本；《元刊雜劇三十種》為今存最早元雜劇刊本，收關漢卿《單刀會》、馬致遠《陳摶高臥》等三十種，兩者合觀可校元雜劇文本之全貌，為元曲文獻之雙璧', '元曲選;臧懋循;元刊雜劇三十種;雜劇選本;元人百種曲', '元', '全中國', NULL, '錄鬼簿;元雜劇（關漢卿、王實甫等）', '中央研究院', NULL, '2026-07-31', 'UNCLEAR', '漢籍全文資料庫需申請帳號密碼', '已收錄 metadata', NULL, '元雜劇文本之兩大淵藪', 'CN') ON CONFLICT (id) DO NOTHING;
+INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (893, '《全元散曲》（隋樹森輯校）', '隋樹森（輯）', '元（13–14世紀）', 21, 7, '中華書局', 'CN-ST-YUAN-SANQU-01', NULL, 'zh', '隋樹森輯校《全元散曲》匯收元代散曲作家二百一十三人、小令三千八百餘首、套數四百餘套，關漢卿、馬致遠、張可久、喬吉等作品網羅殆盡，附作者小傳與本事，為元散曲（雜曲、小令、套數）之總集，元曲研究之基本文獻', '全元散曲;隋樹森;散曲;小令;套數', '元', '全中國', NULL, '太平樂府;中原音韻', '中華書局', NULL, '2026-07-31', 'ARR', '中華書局出版品', '已收錄 metadata', NULL, '元散曲之全編總集', 'CN') ON CONFLICT (id) DO NOTHING;
+INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (894, '《朝野新聲太平樂府》（楊朝英編散曲選）', '楊朝英', '元（14世紀）', 21, 7, '中央研究院', 'CN-ST-YUAN-TAIPINGYUE-01', 'https://hanchi.ihp.sinica.edu.tw/', 'zh', '元楊朝英編《朝野新聲太平樂府》九卷，收關漢卿、馬致遠、張可久等八十餘家小令套數，與所編《陽春白雪》並稱元散曲兩大選本，《太平樂府》尤以小令為富，保存大量元人曲詞與當日唱曲文本', '太平樂府;楊朝英;散曲;小令;選本', '元', '全中國', NULL, '全元散曲;陽春白雪;中原音韻', '中央研究院', NULL, '2026-07-31', 'UNCLEAR', '漢籍全文資料庫需申請帳號密碼', '已收錄 metadata', NULL, '元散曲兩大選本之一', 'CN') ON CONFLICT (id) DO NOTHING;
+INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (895, '《中原音韻》（周德清，北曲聲韻）', '周德清', '元泰定元年（1324）', 21, 7, '中央研究院', 'CN-ST-YUAN-ZHONGYUANYINYUN-01', 'https://hanchi.ihp.sinica.edu.tw/', 'zh', '元周德清撰《中原音韻》二卷，依北曲用韻分十九韻部，並論「正語作詞起例」「作詞十法」與務頭、宮調，為北曲唱作之聲韻規範，亦是中國音韻史上第一部北音韻書，元代語音之直接記錄，影響明清曲韻至深', '中原音韻;周德清;北曲;音韻;十九韻部', '元', '全中國', NULL, '太平樂府;全元散曲;天寶遺事諸宮調', '中央研究院', NULL, '2026-07-31', 'UNCLEAR', '漢籍全文資料庫需申請帳號密碼', '已收錄 metadata', NULL, '北曲用韻之準繩', 'CN') ON CONFLICT (id) DO NOTHING;
+INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (896, '關漢卿《竇娥冤》、王實甫《西廂記》等元雜劇代表作', '關漢卿／王實甫', '元（13世紀）', 21, 7, '中央研究院', 'CN-ST-YUAN-DOUEYUAN-01', 'https://hanchi.ihp.sinica.edu.tw/', 'zh', '關漢卿作雜劇六十餘種，《竇娥冤》《單刀會》《救風塵》為傑作；王實甫《西廂記》五本二十一折為北曲雜劇之冠；與白樸《梧桐雨》、馬致遠《漢宮秋》、鄭光祖《倩女幽魂》並稱元曲四大家，其劇本唱詞兼文學與雜曲藝術之極致，元代戲曲文學之代表', '竇娥冤;西廂記;關漢卿;王實甫;元曲四大家', '元', '全中國', NULL, '元雜劇（關漢卿、王實甫等）;錄鬼簿;元曲選', '中央研究院', NULL, '2026-07-31', 'UNCLEAR', '漢籍全文資料庫需申請帳號密碼', '已收錄 metadata', NULL, '元雜劇文學之顛峰代表作', 'CN') ON CONFLICT (id) DO NOTHING;
+INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (897, '《青樓集》（夏庭芝，雜劇藝人史料）', '夏庭芝', '元至正十五年（1355）', 21, 7, '中央研究院', 'CN-ST-YUAN-QINGLOUJI-01', 'https://hanchi.ihp.sinica.edu.tw/', 'zh', '元夏庭芝撰《青樓集》一卷，記大都、金陵、維揚、武昌等地雜劇女藝人一百一十餘人事迹，兼及男演員、曲家與當時演劇、唱曲情形，為元代戲曲演藝界唯一之專門記載，中國演劇史之珍貴史料', '青樓集;夏庭芝;雜劇藝人;演劇;倡優', '元', '大都;金陵;維揚;武昌', NULL, '錄鬼簿;洪洞水神廟元雜劇壁畫', '中央研究院', NULL, '2026-07-31', 'UNCLEAR', '漢籍全文資料庫需申請帳號密碼', '已收錄 metadata', NULL, '元代演劇界之唯一專記', 'CN') ON CONFLICT (id) DO NOTHING;
+INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (898, '《元文類》（蘇天爵）與《元詩選》（顧嗣立）', '蘇天爵／顧嗣立', '元（1335）／清（18世紀）', 21, 7, '中央研究院', 'CN-ST-YUAN-YUANWENLEI-01', 'https://hanchi.ihp.sinica.edu.tw/', 'zh', '元蘇天爵編《元文類》七十卷，錄元初至延祐間詩文八百餘篇；清顧嗣立編《元詩選》，收元人詩集二千六百餘家，兩書為元代詩文之總彙，保存虞集、揭傒斯、薩都剌、楊維楨、倪瓚等元人文學與題詠，元詩元文研究之基本文獻', '元文類;元詩選;蘇天爵;顧嗣立;元代詩文', '元', '全中國', NULL, '遺山先生文集;中州集', '中央研究院', NULL, '2026-07-31', 'UNCLEAR', '漢籍全文資料庫需申請帳號密碼', '已收錄 metadata', NULL, '元代詩文之總彙', 'CN') ON CONFLICT (id) DO NOTHING;
+INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (899, '高明《琵琶記》（南戲之祖）', '高明', '元末（14世紀）', 21, 7, '中央研究院', 'CN-ST-YUAN-PIPAJI-01', 'https://hanchi.ihp.sinica.edu.tw/', 'zh', '元末高明撰《琵琶記》四十二齣，以南曲演蔡伯喈、趙五娘故事，文詞精工、關目完整，號稱「南戲之祖」，標誌南戲（戲文）由民間向文人化成熟之轉折，為元明南曲系統最高成就，明清諸腔劇種多取資於此', '琵琶記;高明;南戲;戲文;南曲', '元', '全中國', NULL, '元雜劇（關漢卿、王實甫等）;元曲選', '中央研究院', NULL, '2026-07-31', 'UNCLEAR', '漢籍全文資料庫需申請帳號密碼', '已收錄 metadata', NULL, '南戲成熟之里程碑', 'CN') ON CONFLICT (id) DO NOTHING;
+INSERT INTO sources (id, title_zh, creator, date, period_id, source_type_id, source_name, identifier, source_url, language, description, subject, era_range, geo_range, translator, relation, publisher, contributor, access_date, license_status, license_note, collection_status, source_description, notes, region) OVERRIDING SYSTEM VALUE VALUES (900, '《天寶遺事諸宮調》（王伯成，說唱曲藝）', '王伯成', '元（13世紀）', 21, 7, '中央研究院', 'CN-ST-YUAN-ZHUGONGDIAO-01', 'https://hanchi.ihp.sinica.edu.tw/', 'zh', '元王伯成作《天寶遺事諸宮調》，以諸宮調（說唱體）演唐明皇、楊貴妃故事，今存殘曲六十餘套，為元代諸宮調唯一傳世之作，上承金《董西廂》，下啟北曲雜劇，為金元說唱與北曲聲腔淵源之關鍵文獻', '天寶遺事諸宮調;王伯成;諸宮調;說唱;北曲', '元', '全中國', NULL, '中原音韻;琵琶記;元雜劇', '中央研究院', NULL, '2026-07-31', 'UNCLEAR', '漢籍全文資料庫需申請帳號密碼', '已收錄 metadata', NULL, '元諸宮調之唯一傳世之作', 'CN') ON CONFLICT (id) DO NOTHING;
 
-SELECT setval('sources_id_seq', 882) WHERE NOT EXISTS (SELECT 1 FROM sources WHERE id = 882);
+SELECT setval('sources_id_seq', 900) WHERE NOT EXISTS (SELECT 1 FROM sources WHERE id = 900);
 SELECT setval('sources_id_seq', (SELECT COALESCE(MAX(id), 0) FROM sources));
 
 -- === 3. 史料←→資料類型 ===
 INSERT INTO source_materials (source_id, material_type_id) VALUES
-  (873, 1),
-  (874, 2),
-  (874, 1),
-  (875, 2),
-  (875, 1),
-  (876, 1),
-  (877, 1),
-  (878, 2),
-  (878, 1),
-  (879, 2),
-  (880, 1),
-  (881, 2),
-  (882, 1)
+  (883, 1),
+  (884, 1),
+  (885, 1),
+  (886, 1),
+  (887, 1),
+  (888, 1),
+  (889, 1),
+  (889, 2),
+  (890, 1),
+  (891, 1),
+  (892, 1),
+  (893, 1),
+  (894, 1),
+  (895, 1),
+  (896, 1),
+  (897, 1),
+  (898, 1),
+  (899, 1),
+  (900, 1)
 ON CONFLICT DO NOTHING;
 
 -- === 4. 史料←→來源機構 ===
 INSERT INTO source_institutions (source_id, institution_id, role) VALUES
-  (873, 7, 'source'),
-  (873, 7, 'publisher'),
-  (874, 136, 'source'),
-  (874, 136, 'publisher'),
-  (875, 191, 'source'),
-  (875, 191, 'publisher'),
-  (876, 7, 'source'),
-  (876, 7, 'publisher'),
-  (877, 7, 'source'),
-  (877, 7, 'publisher'),
-  (878, 188, 'source'),
-  (878, 188, 'publisher'),
-  (879, 188, 'source'),
-  (879, 188, 'publisher'),
-  (880, 7, 'source'),
-  (880, 7, 'publisher'),
-  (881, 192, 'source'),
-  (881, 192, 'publisher'),
-  (882, 7, 'source'),
-  (882, 7, 'publisher')
+  (883, 7, 'source'),
+  (883, 7, 'publisher'),
+  (884, 7, 'source'),
+  (884, 7, 'publisher'),
+  (885, 138, 'source'),
+  (885, 138, 'publisher'),
+  (886, 138, 'source'),
+  (886, 138, 'publisher'),
+  (887, 7, 'source'),
+  (887, 7, 'publisher'),
+  (888, 7, 'source'),
+  (888, 7, 'publisher'),
+  (889, 191, 'source'),
+  (889, 191, 'publisher'),
+  (890, 7, 'source'),
+  (890, 7, 'publisher'),
+  (891, 7, 'source'),
+  (891, 7, 'publisher'),
+  (892, 7, 'source'),
+  (892, 7, 'publisher'),
+  (893, 138, 'source'),
+  (893, 138, 'publisher'),
+  (894, 7, 'source'),
+  (894, 7, 'publisher'),
+  (895, 7, 'source'),
+  (895, 7, 'publisher'),
+  (896, 7, 'source'),
+  (896, 7, 'publisher'),
+  (897, 7, 'source'),
+  (897, 7, 'publisher'),
+  (898, 7, 'source'),
+  (898, 7, 'publisher'),
+  (899, 7, 'source'),
+  (899, 7, 'publisher'),
+  (900, 7, 'source'),
+  (900, 7, 'publisher')
 ON CONFLICT DO NOTHING;
 
 -- === 完成 ===

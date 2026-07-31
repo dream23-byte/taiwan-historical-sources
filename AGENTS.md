@@ -31,6 +31,7 @@
 - [x] 階段八第四站：宋遼金元拆分五時期（periods 17–21＝北宋／南宋／遼（含西夏）／金／元），北宋收錄（24 筆，sources 759–782，period 17）
 - [x] 階段八第五站：南宋收錄（24 筆，sources 783–806，period 18，institutions 182）
 - [x] 階段八第六站：遼（含西夏）／金／元收錄（76 筆＝並行 Agent 46＋合併互補補強 30，sources 807–882，periods 19–21；遼26／金24／元26；institutions 183–195）
+- [x] 階段八第六站之二：元補充收錄（+18 筆，sources 883–900，period 21；元26→44 筆，對外貿易 8＋雜曲文學 10；總 sources 807）
 
 ## 資料夾結構
 ```
@@ -77,7 +78,8 @@
         ├── metadata_中國遼.csv          # 8 筆（含西夏 5，補強版）
         ├── metadata_中國金.csv          # 12 筆（補強版）
         ├── metadata_中國元.csv          # 10 筆（補強版）
-        └── import_china_sources.sql  # 中國增量匯出 SQL（含 517–882）
+        ├── metadata_中國元_補充.csv     # 18 筆（對外貿易 8＋雜曲文學 10）
+        └── import_china_sources.sql  # 中國增量匯出 SQL（含 517–900）
 ├── 戰後時期/
 │   ├── metadata_戰後時期.csv         # 84筆（原55+擴充29）
 │   ├── metadata_戰後時期_expansion_v2.csv  # 擴充29筆明細
