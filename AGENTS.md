@@ -35,6 +35,7 @@
 - [x] 階段八第七站：明朝收錄（32 筆，sources 901–932，period 22＝明（1368–1644），institutions 196=故宮博物院；10 類 T 類型）
 - [x] 階段八第八站：清朝收錄（32 筆，sources 933–964，period 23＝清（1644–1912），code=qing-dynasty，全數對應既有機構；11 類 T 類型）
 - [x] 階段八第八站之二：中國史前補強（新增 period 24＝中國史前（約前2070年以前）；TW period 1 改名「臺灣史前（1624年以前）」明確區分；補收 7 筆考古遺址 sources 965–971＋institutions 197–204；46 筆遼金元 CSV 回寫；中國累計 362 筆）
+- [x] 階段八第九站：中華民國大陸時期＋中華人民共和國收錄（新增 period 25＝中華民國（1912–1949）code=republic-china、period 26＝中華人民共和國（1949–迄今）code=prc，均 region=CN；新收 103 筆＝民國 41（CN-ST-ROC-01–41，11 類缺 T02）＋共和國 62（CN-ST-PRC-01–62，12 類全）；sources 972–1074＋institutions 234–248；中國累計 465 筆）
 
 ## 資料夾結構
 ```
@@ -84,7 +85,9 @@
         ├── metadata_中國元_補充.csv     # 18 筆（對外貿易 8＋雜曲文學 10）
         ├── metadata_中國明.csv          # 32 筆
         ├── metadata_中國清.csv          # 32 筆
-        └── import_china_sources.sql  # 中國增量匯出 SQL（含 517–964）
+        ├── metadata_中國中華民國.csv    # 41 筆（CN-ST-ROC-01–41）
+        ├── metadata_中國中華人民共和國.csv  # 62 筆（CN-ST-PRC-01–62）
+        └── import_china_sources.sql  # 中國增量匯出 SQL（含 517–1074）
 ├── 戰後時期/
 │   ├── metadata_戰後時期.csv         # 84筆（原55+擴充29）
 │   ├── metadata_戰後時期_expansion_v2.csv  # 擴充29筆明細

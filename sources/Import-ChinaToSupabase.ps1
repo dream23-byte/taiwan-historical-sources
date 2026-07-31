@@ -204,7 +204,9 @@ $allCsvFiles = @(
     "metadata_中國元.csv",
     "metadata_中國元_補充.csv",
     "metadata_中國明.csv",
-    "metadata_中國清.csv"
+    "metadata_中國清.csv",
+    "metadata_中國中華民國.csv",
+    "metadata_中國中華人民共和國.csv"
 )
 
 if ($CsvFile) {
@@ -310,6 +312,8 @@ foreach ($filename in $CsvFiles) {
             '元*' { $periodId = 21; break }
             '明*' { $periodId = 22; break }
             '清*' { $periodId = 23; break }
+            '中華人民共和國*' { $periodId = 26; break }
+            '中華民國*' { $periodId = 25; break }
             default { $periodId = $null }
         }
 
