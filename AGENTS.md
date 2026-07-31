@@ -33,6 +33,7 @@
 - [x] 階段八第六站：遼（含西夏）／金／元收錄（76 筆＝並行 Agent 46＋合併互補補強 30，sources 807–882，periods 19–21；遼26／金24／元26；institutions 183–195）
 - [x] 階段八第六站之二：元補充收錄（+18 筆，sources 883–900，period 21；元26→44 筆，對外貿易 8＋雜曲文學 10；總 sources 807）
 - [x] 階段八第七站：明朝收錄（32 筆，sources 901–932，period 22＝明（1368–1644），institutions 196=故宮博物院；10 類 T 類型）
+- [x] 階段八第八站：清朝收錄（32 筆，sources 933–964，period 23＝清（1644–1912），code=qing-dynasty，全數對應既有機構；11 類 T 類型）
 
 ## 資料夾結構
 ```
@@ -81,7 +82,8 @@
         ├── metadata_中國元.csv          # 10 筆（補強版）
         ├── metadata_中國元_補充.csv     # 18 筆（對外貿易 8＋雜曲文學 10）
         ├── metadata_中國明.csv          # 32 筆
-        └── import_china_sources.sql  # 中國增量匯出 SQL（含 517–932）
+        ├── metadata_中國清.csv          # 32 筆
+        └── import_china_sources.sql  # 中國增量匯出 SQL（含 517–964）
 ├── 戰後時期/
 │   ├── metadata_戰後時期.csv         # 84筆（原55+擴充29）
 │   ├── metadata_戰後時期_expansion_v2.csv  # 擴充29筆明細
