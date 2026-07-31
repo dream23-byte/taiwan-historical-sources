@@ -1,7 +1,7 @@
-# Handoff — 2026-07-31（session 10）
+# Handoff — 2026-07-31（session 11）
 
 ## 專案階段
-**階段八第九站完成：中華民國大陸時期＋中華人民共和國收錄（新時期 25/26＋103 筆），中國收錄累計 465 筆**
+**階段八第十站完成：中國 465 筆 source_url 健康檢查（64 異常全數處置）**
 
 ## 當前狀態
 - 臺灣 516 筆 + 中國 465 筆 = **981 筆史料**已匯入 Supabase（sources max_id=1074，institutions max_id=248）
@@ -15,13 +15,15 @@
 - 臺灣時期（region='TW'）：史前(1，**已改名「臺灣史前（1624年以前）」**)、荷西(2)、明鄭(3)、清領(4)、日治(5)、戰後(6)（已標註西元年分）
 
 ## 本 session 完成項目
-- ✅ 依使用者指示「中國史料線延伸至現代」：新增 periods **25＝中華民國（1912–1949）**（code=republic-china，sort_order=28）、**26＝中華人民共和國（1949–迄今）**（code=prc，sort_order=29），均 region=CN；已 setval periods_id_seq
-- ✅ 建立 `metadata_中國中華民國.csv`（**41 筆**，CN-ST-ROC-01–41，11 類 T 缺 T02）與 `metadata_中國中華人民共和國.csv`（**62 筆**，CN-ST-PRC-01–62，12 類全；馬王堆識別碼修正為 CN-ST-PRC-36）
-- ✅ `Import-ChinaToSupabase.ps1` 新增 `'中華人民共和國*'→26`、`'中華民國*'→25` 映射與兩檔納入 allCsvFiles
-- ✅ 全量模式重跑：CSV 465（跳過 362、新增 **103**）＝DB CN 465 **雙向 0 缺失**；period25=41、period26=62；source_materials 新增 160、source_institutions 新增 200
-- ✅ 新增機構 15 個：institutions **234–248**（大公報社／中共中央文獻研究室／中國社會科學院近代史研究所／中國國家檔案局／中國國家鐵路集團／中華人民共和國政府／中華人民共和國國家計畫委員會／中華民國政府／北京市人民政府／北京政府／各省縣地方志編纂委員會／南京臨時政府／國民政府／國民政府主計處統計局／深圳市人民政府）
-- ✅ `import_china_sources.sql` 已含 972–1074 增量並執行完畢；sources_id_seq、institutions_id_seq 均已 setval（1074／248）
-- ✅ 三星堆：既有 CN-SANXINGDUI-01（period 24）與本批 CN-ST-PRC-38 為**不同筆**，不衝突
+- ✅ **中國 465 筆 source_url 健康檢查完成**：url_results.csv 檢查 136 筆（涵蓋全部中國史料網址），64 筆異常全數處置
+- ✅ **22 組網址替換（42 處）**，寫入 12 個 CSV：
+  - 機構官方網址更替：csmb.org.cn→chinajiandu.cn（漢/魏晉）、erlitou.com→eltxdmuseum.com（夏商周）、tjbwg.com→tjbwg.cn（遼）、wenzimuseum.com→wzbwg.com（夏商周）、hebkaogu.com→hbswwkg.com（夏商周/漢/魏晉/北宋）、peoplepress.com.cn→pph166.com（共和國）、shanggu.com→guji.com.cn（史前）、nywmuseum.com→nywmuseum.org.cn（漢）、sdkaogu.cn→sdswwkgyjy.com（漢）、scskaogu.com→sckg.com（隋唐五代/五代十國）、lnkaogu.com/lnkgw.com→lnkgyjy.com.cn（遼/史前）、shxkaogu.com→shxkgy.cn（漢）、jxkaogu.com→hhhmuseum.cn（漢）、zhouyuan.org→zhouyuanmuseum.com（夏商周）、shxkgy.com→shxkgy.cn（隋唐五代/唐）、history.cssn.cn→cssn.cn（夏商周）
+  - 中研院：ihp.sinica.edu.tw→www1.ihp.sinica.edu.tw（民國×2）、mh.sinica.edu.tw→www.mh.sinica.edu.tw（民國×7）、shac.net.cn https→http（民國×8＋共和國×1）
+  - 專案網址：archive.tsinghua.edu.cn→dag.tsinghua.edu.cn（民國）、history.cuhk.edu.hk guodian→新路徑（夏商周）、yungang.org→baike.baidu.com/museum/yungangshiku（魏晉）
+- ✅ **4 筆標「–」＋備註**（無現行官方網站）：唐蕃會盟碑×2（隋唐五代/唐，zha.gov.cn 失效、大昭寺無官網）、放馬灘秦簡（秦，gswwkg.com 失效、甘肅考古所無官網）、里耶秦簡數位研究資料庫（秦，lyqj.hnu.edu.cn 已停站）
+- ✅ **14 筆保留**（DNS 正常、境外連線暫時受阻或 403/412 反爬，非真失效）：anyangyinxu.cn、shxkg.com、shanximuseum.com、zjmuseum.cn、kaogu.cn、kaogu.net.cn、hljmuseum.com、hubeimuseum.net、cea.gov.cn、cnpc.com.cn、nhc.gov.cn、whc.unesco.org/zh/list/449、ncha.gov.cn、npc.gov.cn 等
+- ✅ 中途 PowerShell 陣列誤操作（`@(@())` 壓平致 h→t 誤替）已用 git restore 還原並重新套用，驗證無殘留
+- ✅ 12 個 CSV、50 行變更（utf-8 BOM 狀態均保留原狀）
 
 ## 注意事項
 - Supabase Free Tier 容量充裕（500 MB）
@@ -37,6 +39,7 @@
 - 網站所有文字敘述以繁體中文呈現
 
 ## 下一步建議
-1. 中國史前至現代已收錄 **465 筆**（20 時期），朝代序列完整；下一步候選：**中國總檢**（source_url 健康檢查、朝代序列覆核）或補「民國/共和國檢測報告」
-2. 階段九（未排程）：擴張至**日本、韓國、琉球、港澳、東南亞**等區域（需新 region 代碼與機構盤點）
-3. 前端 GitHub Pages 部署後標題連動顯示「26 時期 · 12 類型 · 981 筆核心史料」（需 commit＋push 後自動更新）
+1. **中國 CSV 變更尚未 commit**（12 檔、50 行），建議先 commit＋push 保存；後續可重跑 Supabase 匯入確認無誤
+2. 民國/共和國時期**檢測報告**尚未產出（階段八第九站遺留）
+3. 階段九（未排程）：擴張至**日本、韓國、琉球、港澳、東南亞**等區域（需新 region 代碼與機構盤點）
+4. 前端 GitHub Pages 部署後標題連動顯示「26 時期 · 12 類型 · 981 筆核心史料」（需 commit＋push 後自動更新）
