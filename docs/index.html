@@ -231,7 +231,7 @@ async function load() {
     });
 
     allData = sources;
-    document.getElementById('statsText').textContent = `${allPeriods.length} 時期 · ${types.length} 類型 · ${allData.length} 筆核心史料`;
+    document.getElementById('statsText').textContent = `${allPeriods.length} 時期 · ${allData.length} 筆`;
     applyFilters();
   } catch (err) {
     resultsEl.innerHTML = `<div class="error">❌ 載入失敗：${err.message}</div>`;
