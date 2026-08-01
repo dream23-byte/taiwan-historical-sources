@@ -136,6 +136,29 @@ header p { opacity: .85; font-size: .95rem; }
 }
 .error { color: #c0392b; }
 
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .4rem;
+  margin: 1.5rem 0 .5rem;
+  flex-wrap: wrap;
+}
+.pagination button {
+  padding: .35rem .7rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--text);
+  cursor: pointer;
+  font-size: .85rem;
+}
+.pagination button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.pagination button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.pagination button:disabled { opacity: .4; cursor: default; }
+.pagination span { color: var(--text-light); font-size: .85rem; }
+
 /* Mobile */
 @media (max-width: 600px) {
   header h1 { font-size: 1.3rem; }
@@ -178,6 +201,8 @@ header p { opacity: .85; font-size: .95rem; }
 
 <div id="results"><div class="loading">⏳ 載入史料中…</div></div>
 
+<div id="pagination" class="pagination"></div>
+
 </div>
 
 <script>
@@ -207,6 +232,9 @@ const materialEl = document.getElementById('materialFilter');
 const regionEl = document.getElementById('regionFilter');
 const countEl = document.getElementById('count');
 const resultsEl = document.getElementById('results');
+
+const PAGE_SIZE = 50;
+let currentPage = 1;
 
 async function load() {
   try {
@@ -294,6 +322,7 @@ function applyFilters() {
     return true;
   });
 
+  currentPage = 1;
   countEl.textContent = `${filteredData.length} / ${allData.length} 筆`;
   render();
 }
@@ -301,10 +330,16 @@ function applyFilters() {
 function render() {
   if (!filteredData.length) {
     resultsEl.innerHTML = '<div class="empty">📭 無符合條件的史料</div>';
+    renderPagination();
     return;
   }
 
-  resultsEl.innerHTML = filteredData.map(d => {
+  const totalPages = Math.ceil(filteredData.length / PAGE_SIZE);
+  if (currentPage > totalPages) currentPage = totalPages;
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const pageData = filteredData.slice(start, start + PAGE_SIZE);
+
+  resultsEl.innerHTML = pageData.map(d => {
     const typeCode = d.source_type_code || '';
     const typeColorMap = {
       T01: '#2c3e50', T02: '#8e44ad', T03: '#2980b9', T04: '#16a085',
@@ -349,6 +384,41 @@ function render() {
       </div>
     </div>`;
   }).join('');
+
+  renderPagination();
+}
+
+function renderPagination() {
+  const totalPages = Math.ceil(filteredData.length / PAGE_SIZE);
+  const el = document.getElementById('pagination');
+  if (totalPages <= 1) { el.innerHTML = ''; return; }
+
+  let html = `<span>第 ${currentPage} / ${totalPages} 頁</span>`;
+  html += `<button onclick="goToPage(${currentPage - 1})"${currentPage === 1 ? ' disabled' : ''}>‹ 上一頁</button>`;
+
+  const windowStart = Math.max(1, currentPage - 2);
+  const windowEnd = Math.min(totalPages, currentPage + 2);
+  if (windowStart > 1) {
+    html += `<button onclick="goToPage(1)">1</button>`;
+    if (windowStart > 2) html += '<span>…</span>';
+  }
+  for (let i = windowStart; i <= windowEnd; i++) {
+    html += `<button class="${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
+  }
+  if (windowEnd < totalPages) {
+    if (windowEnd < totalPages - 1) html += '<span>…</span>';
+    html += `<button onclick="goToPage(${totalPages})">${totalPages}</button>`;
+  }
+
+  html += `<button onclick="goToPage(${currentPage + 1})"${currentPage === totalPages ? ' disabled' : ''}>下一頁 ›</button>`;
+  el.innerHTML = html;
+}
+
+function goToPage(p) {
+  const totalPages = Math.ceil(filteredData.length / PAGE_SIZE);
+  if (p < 1 || p > totalPages) return;
+  currentPage = p;
+  render();
 }
 
 function toggleDetail(el) {
