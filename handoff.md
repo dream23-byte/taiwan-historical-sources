@@ -16,6 +16,7 @@
 - ✅ 史料類型 7 類（T01 官方檔案文書 6／T07 考古與物質文化・傳世文獻 8／T08 碑碣 2／T05 照片與影像 2／T03 報刊 1／T09 口述歷史 1）；資料類型 3 類（文字4＋圖檔13＋影音3，缺地圖）；授權 ARR 20
 - ✅ UNESCO 世界記憶新納入：馬來紀年（2001）・漢都亞傳奇（2001）・帕尼傳奇（2017）・吐斯廉 S-21 檔案（2009）；另含吳哥窟（1992）・琅勃拉邦古城（1995）世界遺產
 - ✅ AGENTS.md 路線圖＋資料夾結構更新（含「階段九第四站之二：東南亞缺收國家補充」）
+- ✅ **AGENTS.md 瘦身重構（省 context）**：完整路線圖明細外移 `docs/progress.md`（新檔案），AGENTS.md 縮至約 70 行；新增 `sources/AGENTS.md`（匯入慣例：T 對照・M 對照・匯入流程・踩坑紀錄）；AGENTS.md 末段設 Lazy Loading 約定（docs/progress.md、sources/AGENTS.md 任務相關才讀）
 
 ## 注意事項（承上 session）
 - **匯入腳本批次切分 bug（已修）**：批次內逗號邏輯須用 `$j -lt $batch.Count - 1`（批次內最後一筆不加逗號），Import-SEAExtraToSupabase.ps1 沿用修正版
@@ -30,8 +31,8 @@
 3. 前端無需改 code（標題動態顯示「67 時期 · 1183 筆」）
 
 ## 同步狀態
-- L1 本地：✅ AGENTS.md／handoff.md 已更新
-- L2 GitHub：⚠️ 本 session 檔案尚未 commit＋push（含 sources/東南亞/、Import-SEAExtraToSupabase.ps1、import_sea_sources_v2.sql、AGENTS.md、handoff.md）
+- L1 本地：✅ AGENTS.md／handoff.md 已更新（AGENTS.md 已瘦身重構）
+- L2 GitHub：⚠️ 本 session 檔案尚未 commit＋push（含 sources/東南亞/、Import-SEAExtraToSupabase.ps1、import_sea_sources_v2.sql、docs/progress.md、sources/AGENTS.md、AGENTS.md、handoff.md）
 - L3 Obsidian：❌ 未啟用（AGENTS.md 同步層級表 L3 未登記）
 
 🕐 最後更新：2026-08-01（Agent @ $env:COMPUTERNAME）
