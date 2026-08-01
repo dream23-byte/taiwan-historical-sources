@@ -221,6 +221,23 @@ async function api(url) {
   return res.json();
 }
 
+// Supabase 服務端 db-max-rows=1000 硬上限，用 Range header 分批拉取全部
+async function apiAll(url) {
+  const all = [];
+  let start = 0;
+  for (;;) {
+    const res = await fetch(SUPABASE_URL + url, {
+      headers: { ...headers, 'Range-Unit': 'items', 'Range': `${start}-${start + 999}` },
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const batch = await res.json();
+    all.push(...batch);
+    if (batch.length < 1000) break;
+    start += 1000;
+  }
+  return all;
+}
+
 let allData = [];
 let filteredData = [];
 let allPeriods = [];
@@ -242,7 +259,7 @@ async function load() {
       api('/rest/v1/periods?select=*&order=sort_order'),
       api('/rest/v1/source_types?select=*&order=sort_order'),
       api('/rest/v1/material_types?select=*&order=id'),
-      api('/rest/v1/source_details?select=*&order=id&limit=5000'),
+      apiAll('/rest/v1/source_details?select=*&order=id'),
     ]);
 
     allPeriods = periods;
