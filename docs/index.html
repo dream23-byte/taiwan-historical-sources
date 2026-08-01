@@ -214,7 +214,7 @@ async function load() {
       api('/rest/v1/periods?select=*&order=sort_order'),
       api('/rest/v1/source_types?select=*&order=sort_order'),
       api('/rest/v1/material_types?select=*&order=id'),
-      api('/rest/v1/source_details?select=*&order=id'),
+      api('/rest/v1/source_details?select=*&order=id&limit=5000'),
     ]);
 
     allPeriods = periods;
