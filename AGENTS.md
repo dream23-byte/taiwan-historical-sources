@@ -38,6 +38,7 @@
 - [x] 階段八第九站：中華民國大陸時期＋中華人民共和國收錄（新增 period 25＝中華民國（1912–1949）code=republic-china、period 26＝中華人民共和國（1949–迄今）code=prc，均 region=CN；新收 103 筆＝民國 41（CN-ST-ROC-01–41，11 類缺 T02）＋共和國 62（CN-ST-PRC-01–62，12 類全）；sources 972–1074＋institutions 234–248；中國累計 465 筆）
 - [x] 階段八第十站：中國 465 筆 source_url 健康檢查（url_results 136 筆中 64 異常全數處置：22 組網址替換 42 處＋4 筆標「–」＋14 筆境外暫時性受阻保留；12 個 CSV、50 行更新）
 - [x] 階段八第十一站：港澳史料收錄（32 筆＝香港 18＋澳門 14，sources 1075–1106；新增 period 27–32＝香港英治1841–1941／香港日佔1941–1945／香港戰後1945–1997／香港特區1997–迄今／澳門葡治1557–1999／澳門特區1999–迄今，region=HK/MO；institutions 249–271 共 23 個；materials 47＋inst_links 99；臺灣＋中國＋港澳累計 1013 筆）
+- [x] 階段九第一站：琉球史料收錄（30 筆＝古琉球・三山時代3／第一尚氏3→2／第二尚氏11／沖繩縣・日本統治7／琉球政府・美治6／沖繩返還後1，sources 1107–1136；新增 period 33–38＝古琉球・三山時代（～1429）／第一尚氏王朝（1429–1469）／第二尚氏王朝（1469–1879）／沖繩縣・日本統治（1879–1945）／琉球政府・美治時期（1945–1972）／沖繩返還後（1972–迄今），region=RY；institutions 272–289 共 18 個新機構（＋既有中國第一歷史檔案館）；materials 34＋inst_links 96；臺灣＋中國＋港澳＋琉球累計 1043 筆）
 
 ## 資料夾結構
 ```
@@ -71,12 +72,17 @@
     ├── Import-Institutions.ps1  # 機構名稱→DB ID 對照腳本
     ├── Import-ChinaToSupabase.ps1 # CSV→SQL 匯出腳本（中國，含 region 欄位）
     ├── Import-HKMoToSupabase.ps1 # CSV→SQL 匯出腳本（港澳，仿中國 v2）
+    ├── Import-RyukyuToSupabase.ps1 # CSV→SQL 匯出腳本（琉球，仿港澳）
     ├── import_hkmo_sources.sql # 港澳增量匯出 SQL（sources 1075–1106）
+    ├── import_ryukyu_sources.sql # 琉球增量匯出 SQL（sources 1107–1136）
     ├── 港澳/
     │   ├── metadata_香港.csv    # 18 筆（HK-ST-01–18）
     │   ├── metadata_澳門.csv    # 14 筆（MO-ST-01–14）
     │   ├── 檢測報告_香港.md
     │   └── 檢測報告_澳門.md
+    ├── 琉球/
+    │   ├── metadata_琉球.csv    # 30 筆（RY-ST-01–30）
+    │   └── 檢測報告_琉球.md
     └── 中國/
         ├── metadata_中國史前.csv    # 28 筆（21＋7 考古遺址補充）
         ├── metadata_中國夏商周.csv  # 18 筆
