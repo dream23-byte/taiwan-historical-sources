@@ -33,7 +33,7 @@
 
 ## 同步狀態
 - L1 本地：✅ AGENTS.md／handoff.md（本檔 session 24）
-- L2 GitHub：待推
+- L2 GitHub：✅ 已推（commit 80c5e0b）
 - L3 Obsidian：❌ 未啟用
 
 🕐 最後更新：2026-08-02（Agent big-pickle @ ALYSSALGGRAM）
