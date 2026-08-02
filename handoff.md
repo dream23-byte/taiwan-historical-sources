@@ -38,7 +38,7 @@
 
 ## 同步狀態
 - L1 本地：✅ AGENTS.md／handoff.md（本檔 session 23）／docs 兩份交接文件
-- L2 GitHub：⚠️ 待 commit＋push（handoff.md、AGENTS.md、docs/校對清單_臺灣事件MVP.md、docs/低敏感工作指令模板.md）
+- L2 GitHub：✅ 已推（commit 0277f9d）
 - L3 Obsidian：❌ 未啟用
 
 🕐 最後更新：2026-08-02（Agent @ $env:COMPUTERNAME）
