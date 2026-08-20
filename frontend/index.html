@@ -182,7 +182,7 @@ header p { opacity: .85; font-size: .95rem; }
   <input type="text" id="search" placeholder="搜尋史料名稱、描述、作者…">
   <div class="fg">
     <input type="text" class="fs" data-target="regionFilter" placeholder="地區">
-    <select id="regionFilter"><option value="">所有地區</option><option value="TW">臺灣</option><option value="CN">中國</option><option value="HK">香港</option><option value="MO">澳門</option><option value="RY">琉球</option><option value="JP">日本</option><option value="KR">韓國</option><option value="SEA">東南亞</option><option value="SA">南亞</option><option value="OTHER">其他</option></select>
+    <select id="regionFilter"><option value="">所有地區</option><option value="TW">臺灣</option><option value="CN">中國</option><option value="HK">香港</option><option value="MO">澳門</option><option value="RY">琉球</option><option value="JP">日本</option><option value="KR">韓國</option><option value="SEA">東南亞</option><option value="SA">南亞</option><option value="US">美國</option><option value="OTHER">其他</option></select>
   </div>
   <div class="fg">
     <input type="text" class="fs" data-target="periodFilter" placeholder="時期">
@@ -365,7 +365,7 @@ function render() {
     };
     const color = typeColorMap[typeCode] || 'var(--accent)';
 
-    const regionMap = { TW:'臺灣', CN:'中國', HK:'香港', MO:'澳門', RY:'琉球', JP:'日本', KR:'韓國', SEA:'東南亞', SA:'南亞', OTHER:'其他' };
+    const regionMap = { TW:'臺灣', CN:'中國', HK:'香港', MO:'澳門', RY:'琉球', JP:'日本', KR:'韓國', SEA:'東南亞', SA:'南亞', US:'美國', OTHER:'其他' };
     const regionLabel = regionMap[d.region] || d.region || '';
 
     const materials = (d.material_types || []).map(m => `<span>${m.name}</span>`).join(' ');
