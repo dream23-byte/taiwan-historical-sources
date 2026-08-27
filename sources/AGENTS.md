@@ -26,9 +26,11 @@
 > 一筆史料可對應多個資料類型，CSV 以「;」分隔。
 
 ## 三、CSV 欄位（末欄 region）
-- 各區域 CSV 固定 22 欄（題名…備註，對應 `Metadata欄位規範.md` v1.3），**末欄加 region**（TW/CN/HK/MO/RY/JP/KR/SEA）。
+- 各區域 CSV 固定 22 欄（題名…備註，對應 `Metadata欄位規範.md` v1.3），**末欄加 region**（TW/CN/HK/MO/RY/JP/KR/SEA/US）。
+- **v1.4 起加「檢索指引」欄**（在備註之後、region 之前）：當來源網址為官網首頁/目錄入口，記錄進入後該輸入的關鍵字或路徑（外文網站特別需要）。
 - 識別碼規則：`區域碼-ST-序號`（如 VN-ST-01、KH-ST-01），全庫唯一。
 - 時期：CSV「年代範圍」開頭文字決定 period（Import 腳本 switch -Wildcard），各國獨立 code（vn-*/ph-*/kh-*/la-*/my-*/sg-* 等）。
+- ⚠️ **CSV 陷阱**：欄位值若含英文逗號（如 "Office of the Historian, U.S. Department of State"），必須用雙引號包裹該欄，否則 Import-Csv 會把逗號當分隔符導致整列欄位錯位。
 
 ## 四、匯入流程（每站固定步驟）
 1. 建 `metadata_區域.csv`＋`檢測報告_區域.md`

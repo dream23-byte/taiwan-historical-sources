@@ -394,6 +394,7 @@ function render() {
         ${(d.institutions || []).length ? `<div class="row"><span class="label">機構</span><span class="value">${d.institutions.map(i => `${esc(i.name)}（${i.role === 'source' ? '典藏' : i.role === 'publisher' ? '出版' : i.role === 'contributor' ? '貢獻' : i.role}）`).join('、')}</span></div>` : ''}
         ${(d.material_types || []).length ? `<div class="row"><span class="label">資料形式</span><span class="value">${d.material_types.map(m => m.name).join('、')}</span></div>` : ''}
         ${d.source_url && d.source_url !== '-' ? `<div class="row"><span class="label">連結</span><span class="value"><a href="${esc(d.source_url)}" target="_blank" rel="noopener">${esc(d.source_url)}</a></span></div>` : ''}
+        ${d.search_hint ? `<div class="row"><span class="label">檢索指引</span><span class="value">${esc(d.search_hint)}</span></div>` : ''}
         ${d.identifier ? `<div class="row"><span class="label">識別碼</span><span class="value">${esc(d.identifier)}</span></div>` : ''}
         ${d.language ? `<div class="row"><span class="label">語言</span><span class="value">${esc(d.language)}</span></div>` : ''}
         ${d.license_status ? `<div class="row"><span class="label">授權</span><span class="value">${esc(d.license_status)}${d.license_note ? '（' + esc(d.license_note) + '）' : ''}</span></div>` : ''}
