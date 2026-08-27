@@ -9,7 +9,7 @@
 - **全庫 1314 筆**：臺灣 516／中國 466／港澳 32／琉球 30／日本 40／韓國 40／東南亞 60／印度 37／巴基斯坦 18／孟加拉 17／斯里蘭卡 18／美國 39／其他 1
 - sources 1–1415・periods 1–119・institutions 1–422，全部已匯入 Supabase
 - 前端標題動態顯示「118 時期 · 1314 筆」（不需改 code）
-- **教學網站後台整合進行中**：`search-sources`／`event-detail` API 已上線、`historical_events` 臺灣 8 事件入庫（MVP）
+- **教學網站後台整合進行中**：`search-sources`／`event-detail` API 已上線、`historical_events` 100 事件入庫（CN 47／WORLD 42／JP 3／TW 8）、`event_sources` 168 條關聯已建立（77 事件→134 史料）
 - **美國史料已入庫**：39 筆（NARA/LOC/FRUS/DPLA/Smithsonian 等），region=US，7 時期（殖民地～當代）
 
 ## 目標與路線圖（精華）
