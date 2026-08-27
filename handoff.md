@@ -19,6 +19,7 @@
 - ✅ **建立 event_sources 關聯 168 條**：臺灣 8 事件（30 條）、中國 47 事件（全對應）、日本 3 事件、WORLD 20 事件（美軍/波斯史料支援）；引用 134 筆史料
 - ✅ 驗證 event_detail RPC 正常回傳 sources（含 citation_note、institutions）
 - ✅ **修正事件 5 desc**（校對清單裁示通過）：政府遷臺與全島戒嚴改為「戒嚴令 1949.5.19 先、同年 12 月政府遷臺」
+- ✅ **裁示結清**（2026-08-27）：事件 3 location_name 改「下關（簽約地）」；事件 1 category 已是「經濟」無需改；事件 56 desc 補充前因鏈（絲路受阻→大航海→荷蘭入印尼→攻澎湖失利→1624 轉占大員）；因果鏈第二節使用者確認維持現狀
 - ✅ **修復重大 Bug：`historical_events.effects` 欄位型別原是 `text[]`**，導致 event-detail API 回 400（`operator does not exist: bigint = text`）；migration `fix_effects_array_type` 已轉為 `bigint[]`（causes／effects 現已一致）
 - ✅ **實測 event-detail API 正常**：`id=57`（鄭氏驅逐荷蘭人）回傳完整 sources 4 筆、causes/effects/contemporaries 正確；`id=47`、`id=99` 亦正常
 - ✅ 更新 sources/AGENTS.md（檢索指引欄位說明已完成，本 session 無新增工具變更）
@@ -45,9 +46,8 @@
 - `historical_events`／`event_sources` 與 sources 同一 Supabase 專案（ushwjujxqvonyjumzgkp）
 
 ## 下一步（具體）
-1. 使用者裁示剩餘校對項：事件 1 category 改「經濟」？事件 3 location_name「（簽約地）」？因果鏈第二節是否同意？
-2. 之後回到史料續收（候選：尼泊爾／不丹・馬爾地夫・阿富汗／大洋洲／中東），開新站先讀 `Import-SouthAsiaToSupabase.ps1` 範本
-3. 待 23 筆歐洲/中東事件有史料後，再回來補 event_sources 空白
+1. 之後回到史料續收（候選：尼泊爾／不丹・馬爾地夫・阿富汗／大洋洲／中東），開新站先讀 `Import-SouthAsiaToSupabase.ps1` 範本
+2. 待 23 筆歐洲/中東事件有史料後，再回來補 event_sources 空白
 
 ## 同步狀態
 - L1 本地：✅ AGENTS.md／handoff.md（本檔 session 27）
