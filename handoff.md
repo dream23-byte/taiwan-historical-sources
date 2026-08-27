@@ -60,7 +60,7 @@
 
 ## 同步狀態
 - L1 本地：✅ AGENTS.md／handoff.md／sources（不丹 CSV＋腳本＋SQL＋檢測報告）
-- L2 GitHub：⏳ 待推送（不丹入庫，commit 尚未建立）
+- L2 GitHub：✅ 已推送（4f6a7d1）
 - L3 Obsidian：❌ 未啟用
 
 🕐 最後更新：2026-08-27（Agent big-pickle @ ALYSSALGGRAM）
