@@ -55,6 +55,8 @@
 
 - [x] 階段十第三站：尼泊爾史料收錄（18 筆，NP-ST-01–18，sources 1416–1433；新增 period 89・120–123＝古代王國（基拉特・李察維時期，約前7世紀–750）／馬拉王朝（750–1768）／沙阿王朝統一（1768–1846）／拉納王朝（1846–1951）／君主立憲～聯邦共和（1951–迄今），region=SA，code=np-ancient/np-malla/np-shah/np-rana/np-republic；institutions 423–436 共 14 個新機構（尼泊爾國家檔案館・凱撒圖書館・尼泊爾國家圖書館・尼泊爾國家數位圖書館・馬丹・普拉斯卡圖書館・Archives Nepal・尼泊爾國家統計局・藍毗尼開發信託・尼泊爾考古局・尼泊爾國家博物館・廓爾喀報社・Digital Himalaya・特里布萬大學中央圖書館・尼泊爾口述歷史計畫）；materials 35＋inst_links 36；全庫累計 1332 筆；UNESCO 世界記憶：妙聞集 Susrutamhita（2013）；世界遺產：藍毗尼（1997）・加德滿都谷地（1979）；含境外機構：Digital Himalaya；⚠️ 踩坑：periods 90–93 原已被中國漢代佔用，尼泊爾改用 120–123）
 
+- [x] 階段十第四站：不丹史料收錄（16 筆，BT-ST-01–16，sources 1434–1449；新增 period 124–126＝佛教傳入與前統一時期（約7世紀–1616）／沙布瓊統一與座宗時代（1616–1907）／旺楚克王朝與憲政民主（1907–迄今），region=SA，code=bt-early-buddhist/bt-shabdrung/bt-wangchuck；institutions 437–446 共 10 個新機構（不丹國家圖書館暨國家檔案館・不丹國家統計局・不丹內政文化部・不丹文化部・不丹王國政府・不丹皇家大學・庫恩塞報社・維也納大學西藏手稿計畫・Loden基金會・大英圖書館瀕危檔案計畫＋沿用既有大英圖書館/英國國家檔案館/Digital Himalaya/UNESCO世界遺產中心）；materials 32＋inst_links 32；全庫累計 1348 筆；遺產相關：座宗群世界遺產預備名單（UNESCO tentative 5695，2012）・不丹迄今無正式世界遺產亦無世界記憶登錄；涵蓋：國圖古籍與檔案・國家統計局普查・大英 EAP 寺院手稿・Loden 數位化・TNA 杜爾戰爭/辛楚拉條約檔案・座宗遺產・Kuensel 國家報・Digital Himalaya JBS・RUB・TMPV 康久爾寫本・口述史・J.C. White 1904–07 首批照片・2008 憲法・大英 IOR 文書）
+
 ## 階段十一：北美（進行中）
 
 - [x] 階段十一第一站：美國史料收錄（39 筆，US-ST-01–39，sources 1377–1415；新增 period 113–119＝殖民地與獨立時期（1607–1789）／早期共和國（1789–1861）／南北戰爭時期（1861–1865）／重建與鍍金時代（1865–1929）／大蕭條與二戰（1929–1945）／冷戰時期（1945–1991）／當代美國（1991–迄今），region=US，code=us-colonial-revolution/us-early-republic/us-civil-war/us-reconstruction-gilded/us-great-depression-ww2/us-cold-war/us-modern；institutions 398–422 共 25 個新機構（NARA/LOC/Smithsonian/CIA/EPA/GPO/Yale Law School/GWU/National Security Archive/ADST 等）；materials 61＋inst_links 122；全庫累計 1322 筆；涵蓋：建國文獻/NARA Catalog/LOC 數位館藏/Chronicling America 報紙/FRUS 外交叢書/Congress.gov/總統公開文件/Founders Online/CFR/Federal Register/人口普查/IPUMS/阿瓦隆計畫/史密森尼博物館/國家安全檔案館/國會記錄/獨立戰爭/南北戰爭/大蕭條與新政/二戰/越戰檔案/總統圖書館/婦女選舉權/民權運動/原住民/奴隸制度/移民紀錄/科學科技/DPLA/外交口述歷史/水門事件/國防部/CIA 解密/能源部/環保署/國家公園/婦女歷史/勞工運動/猶太歷史）
@@ -75,6 +77,7 @@
 | 孟加拉 | 1332–1348 | 79–83 | 358–397（40 新機構共用） | 17 |
 | 斯里蘭卡 | 1349–1366 | 84–88 | 358–397（40 新機構共用） | 18 |
 | 尼泊爾 | 1416–1433 | 89、120–123 | 423–436 | 18 |
+| 不丹 | 1434–1449 | 124–126 | 437–446 | 16 |
 | 美國 | 1377–1415 | 113–119 | 398–422 | 39 |
 | 其他 | 1371 | – | – | 1 |
-| **全庫** | **1–1433** | **1–123** | **1–436** | **1332** |
+| **全庫** | **1–1449** | **1–126** | **1–446** | **1348** |

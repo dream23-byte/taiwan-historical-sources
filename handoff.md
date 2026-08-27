@@ -1,10 +1,10 @@
 # Handoff — 2026-08-27（session 27）
 
 ## 專案階段
-**尼泊爾史料入庫完成＋教學網站後台整合持續（event_sources 168 條關聯）**
+**尼泊爾＋不丹史料入庫完成＋教學網站後台整合持續（event_sources 168 條關聯）**
 
 ## 當前狀態
-- 全庫 **1332 筆**史料（臺灣 516／中國 466／港澳 32／琉球 30／日本 40／韓國 40／東南亞 60／印度 37／巴基斯坦 18／孟加拉 17／斯里蘭卡 18／尼泊爾 18／美國 39／其他 1），sources max_id=1433、institutions max_id=436、periods 1–123
+- 全庫 **1348 筆**史料（臺灣 516／中國 466／港澳 32／琉球 30／日本 40／韓國 40／東南亞 60／印度 37／巴基斯坦 18／孟加拉 17／斯里蘭卡 18／尼泊爾 18／不丹 16／美國 39／其他 1），sources max_id=1449、institutions max_id=446、periods 1–126
 - **`historical_events` 表：100 筆事件**（CN 47／WORLD 42／JP 3／TW 8），id 1–100
   - ⚠️ 發現並修正：id 89–100 共 12 筆（世界史事件）原本 region 誤標為 TW，已改為 **WORLD**（使用者裁示：暫列世界分類，待史料擴充後再細分）
 - **`event_sources` 表：168 條關聯已建立**，涵蓋 77 事件、引用 134 筆史料
@@ -16,6 +16,7 @@
 
 ## 本 session 完成項目
 - ✅ **尼泊爾史料入庫完成（2026-08-27）**：18 筆（NP-ST-01–18，sources 1416–1433）＋5 時期（id 89、120–123＝古代王國/馬拉/沙阿/拉納/共和）＋14 新機構（institutions 423–436）＋materials 35＋inst_links 36；含 UNESCO 世界記憶《妙聞集》（2013）・世界遺產藍毗尼/加德滿都谷地；⚠️ 踩坑：periods 90–93 原已被中國漢代佔用，尼泊爾改用 120–123（新站開站須先查 periods id 是否已被佔用）
+- ✅ **不丹史料入庫完成（2026-08-27）**：16 筆（BT-ST-01–16，sources 1434–1449）＋3 時期（id 124–126＝佛教傳入與前統一/沙布瓊統一與座宗/旺楚克王朝與憲政民主）＋10 新機構（institutions 437–446，＋沿用既有 大英圖書館/英國國家檔案館/Digital Himalaya/UNESCO世界遺產中心）＋materials 32＋inst_links 32；遺產：座宗群世界遺產預備名單（2012）・不丹無正式世界遺產/世界記憶；含境外機構：大英 EAP・TNA・Digital Himalaya・維也納大學 TMPV・Loden；全庫累計 1348 筆
 - ✅ **修正 event region**：id 89–100（12 筆世界史事件）region 由 TW 改為 WORLD
 - ✅ **建立 event_sources 關聯 168 條**：臺灣 8 事件（30 條）、中國 47 事件（全對應）、日本 3 事件、WORLD 20 事件（美軍/波斯史料支援）；引用 134 筆史料
 - ✅ 驗證 event_detail RPC 正常回傳 sources（含 citation_note、institutions）
@@ -54,12 +55,12 @@
 - `historical_events`／`event_sources` 與 sources 同一 Supabase 專案（ushwjujxqvonyjumzgkp）
 
 ## 下一步（具體）
-1. 史料續收候選：不丹／阿富汗／大洋洲／中東，開新站先讀 `Import-NepalToSupabase.ps1` 範本（新增時期的 id 須先確認未佔用，宜用 120 以上空號）
+1. 史料續收候選：阿富汗／大洋洲／中東，開新站先讀 `Import-BhutanToSupabase.ps1` 範本（新增時期的 id 須先確認未佔用，宜用 126 以上空號）
 2. 待 23 筆歐洲/中東事件有史料後，再回來補 event_sources 空白
 
 ## 同步狀態
-- L1 本地：✅ AGENTS.md／handoff.md（本檔 session 27）
-- L2 GitHub：✅ 已推送（e715413）
+- L1 本地：✅ AGENTS.md／handoff.md／sources（不丹 CSV＋腳本＋SQL＋檢測報告）
+- L2 GitHub：⏳ 待推送（不丹入庫，commit 尚未建立）
 - L3 Obsidian：❌ 未啟用
 
 🕐 最後更新：2026-08-27（Agent big-pickle @ ALYSSALGGRAM）
