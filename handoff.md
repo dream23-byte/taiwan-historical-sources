@@ -19,7 +19,8 @@
 - ✅ **建立 event_sources 關聯 168 條**：臺灣 8 事件（30 條）、中國 47 事件（全對應）、日本 3 事件、WORLD 20 事件（美軍/波斯史料支援）；引用 134 筆史料
 - ✅ 驗證 event_detail RPC 正常回傳 sources（含 citation_note、institutions）
 - ✅ **修正事件 5 desc**（校對清單裁示通過）：政府遷臺與全島戒嚴改為「戒嚴令 1949.5.19 先、同年 12 月政府遷臺」
-- ✅ **裁示結清**（2026-08-27）：事件 3 location_name 改「下關（簽約地）」；事件 1 category 已是「經濟」無需改；事件 56 desc 補充前因鏈（絲路受阻→大航海→荷蘭入印尼→攻澎湖失利→1624 轉占大員）；因果鏈第二節使用者確認維持現狀
+- ✅ **裁示結清**（2026-08-27）：事件 3 location_name 改「下關（簽約地）」；事件 1 category 已是「經濟」無需改；因果鏈第二節使用者確認維持現狀
+- ✅ **事件 56 前因鏈經史料查證**（2026-08-27）：使用者記憶主框架正確，但細節修正——(1) 荷蘭 1622 是**先攻澳門失利**才轉佔澎湖築風櫃城（非直接為搶市場）；(2) 1623–24 福建巡撫南居益發動**風櫃圍城戰**（萬兵二百船圍城七月），荷軍非戰敗潰退，而是經**李旦調停**協議拆城退出、明朝默許轉往大員。desc 已改為查證版本
 - ✅ **修復重大 Bug：`historical_events.effects` 欄位型別原是 `text[]`**，導致 event-detail API 回 400（`operator does not exist: bigint = text`）；migration `fix_effects_array_type` 已轉為 `bigint[]`（causes／effects 現已一致）
 - ✅ **實測 event-detail API 正常**：`id=57`（鄭氏驅逐荷蘭人）回傳完整 sources 4 筆、causes/effects/contemporaries 正確；`id=47`、`id=99` 亦正常
 - ✅ 更新 sources/AGENTS.md（檢索指引欄位說明已完成，本 session 無新增工具變更）
