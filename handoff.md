@@ -20,6 +20,7 @@
 - ✅ 更新 sources/AGENTS.md（region 碼加入 US）
 - ✅ 地區篩選前端加入「美國」（frontend/ 與 docs/ index.html，GitHub Pages 已部署）
 - ✅ 清除測試/非權威記錄：108課綱＋維基百科＋Britannica＋chinaknowledge＋MIT OCW＋CNN＋BBC＋JSTOR 共 8 筆刪除；僅保留劍橋中國史（CN）與大都會博物館（OTHER）兩筆權威參考
+- ✅ **設計決策**：教學網站的「參考文獻跳板」（維基百科等）一律由網站端自行管理，**不再放入權威史料庫**；史料庫維持純權威，只收可引用的史料
 
 ## 注意事項
 - **事件資料來源已更新**：88事件現在從 GitHub Pages 網站載入（非本地暫存檔），網站 JS 透過 Supabase client 直接查詢 `historical_events` 表
