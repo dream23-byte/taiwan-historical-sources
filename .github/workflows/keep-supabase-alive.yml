@@ -1,7 +1,7 @@
 name: Keep Supabase Alive
 
 # 免費方案閒置 7 天會自動暫停專案；每週一戳一次 Supabase REST API 維持活躍。
-# 同時寫心跳檔並 commit，維持 repo 活躍，避免 GitHub 60 天無活動自動停用排程。
+# 心跳 commit 推到獨立的 heartbeat 分支，master 保持乾淨、本地不會落後。
 on:
   schedule:
     - cron: '0 0 * * 1'
@@ -34,14 +34,21 @@ jobs:
           fi
           echo "✅ 專案活躍"
 
-      - name: Heartbeat commit
+      - name: Heartbeat commit（僅推 heartbeat 分支）
         run: |
           set -e
-          mkdir -p .github
-          date -u +"%Y-%m-%dT%H:%M:%SZ" > .github/heartbeat.txt
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          # 取得既有 heartbeat 分支；不存在則建立獨立分支
+          if git ls-remote --exit-code --heads origin heartbeat >/dev/null 2>&1; then
+            git fetch origin heartbeat
+            git checkout -B heartbeat origin/heartbeat
+          else
+            git checkout --orphan heartbeat
+            git rm -rf . >/dev/null 2>&1 || true
+          fi
+          mkdir -p .github
+          date -u +"%Y-%m-%dT%H:%M:%SZ" > .github/heartbeat.txt
           git add .github/heartbeat.txt
-          git commit -m "chore: heartbeat $(date -u +%Y-%m-%d)" || echo "無變更，略過"
-          git pull --rebase --autostash origin HEAD || true
-          git push
+          git commit -m "chore: heartbeat $(date -u +%Y-%m-%d) [skip ci]" || echo "無變更，略過"
+          git push origin heartbeat
