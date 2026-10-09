@@ -1,0 +1,47 @@
+name: Keep Supabase Alive
+
+# 免費方案閒置 7 天會自動暫停專案；每週一戳一次 Supabase REST API 維持活躍。
+# 同時寫心跳檔並 commit，維持 repo 活躍，避免 GitHub 60 天無活動自動停用排程。
+on:
+  schedule:
+    - cron: '0 0 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ping Supabase REST API
+        env:
+          # publishable anon key（已公開於前端 index.html，非機密）
+          SUPABASE_URL: 'https://ushwjujxqvonyjumzgkp.supabase.co'
+          SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzaHdqdWp4cXZvbnlqdW16Z2twIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyMTQwNTMsImV4cCI6MjEwMDc5MDA1M30._pOtF2T9FQIT0z0nFNUZq6kyGH9-2hPvORZgmujBOWc'
+        run: |
+          set -e
+          ENDPOINT="$SUPABASE_URL/rest/v1/periods?select=id&limit=1"
+          code=$(curl -s -o /dev/null -w "%{http_code}" "$ENDPOINT" \
+                 -H "apikey: $SUPABASE_ANON_KEY" \
+                 -H "Authorization: Bearer $SUPABASE_ANON_KEY")
+          echo "Supabase 回應 HTTP $code"
+          if [ "$code" != "200" ]; then
+            echo "::error::Supabase ping 失敗（HTTP $code），專案可能已暫停或連線異常"
+            exit 1
+          fi
+          echo "✅ 專案活躍"
+
+      - name: Heartbeat commit
+        run: |
+          set -e
+          mkdir -p .github
+          date -u +"%Y-%m-%dT%H:%M:%SZ" > .github/heartbeat.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .github/heartbeat.txt
+          git commit -m "chore: heartbeat $(date -u +%Y-%m-%d)" || echo "無變更，略過"
+          git pull --rebase --autostash origin HEAD || true
+          git push
