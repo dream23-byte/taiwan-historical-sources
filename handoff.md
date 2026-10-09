@@ -53,7 +53,7 @@
 - **敏感性分級**：臺灣事件中 1624／1662／1895／1971 低敏感可直接操作；1947／1949／1987／1996 高敏感（建議由使用者在 Supabase 介面手動改）
 - 史料查詢 API 踩坑（已修）：`bool_and` 忽略 NULL 需改 `NOT EXISTS`＋`COALESCE`；函數參數用 `p_` 前綴避免與欄位同名
 - `historical_events`／`event_sources` 與 sources 同一 Supabase 專案（ushwjujxqvonyjumzgkp）
-- **Supabase 免費方案防暫停（2026-10-09 設置）**：專案曾因閒置 7 天被自動暫停，使用者手動 Unpause 後資料完好（sources 1348／periods 126／institutions 446／events 100／event_sources 168）。已新增 `.github/workflows/keep-supabase-alive.yml`：每週一自動 ping `rest/v1/periods`（防 7 天暫停）＋推心跳 commit（防 GitHub 60 天停用排程）。⚠️ 本地每週會落後 1 筆 bot commit，開工先 `git pull --ff-only`
+- **Supabase 免費方案防暫停（2026-10-09 設置）**：專案曾因閒置 7 天被自動暫停，使用者手動 Unpause 後資料完好（sources 1348／periods 126／institutions 446／events 100／event_sources 168）。已新增 `.github/workflows/keep-supabase-alive.yml`：每週一自動 ping `rest/v1/periods`（防 7 天暫停）＋把心跳 commit 推到**獨立 `heartbeat` 分支**（防 GitHub 60 天停用排程）；master 保持乾淨、本地不會落後
 
 ## 下一步（具體）
 1. 史料續收候選：阿富汗／大洋洲／中東，開新站先讀 `Import-BhutanToSupabase.ps1` 範本（新增時期的 id 須先確認未佔用，宜用 126 以上空號）
