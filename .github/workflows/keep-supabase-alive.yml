@@ -1,10 +1,13 @@
 name: Keep Supabase Alive
 
-# 免費方案閒置 7 天會自動暫停專案；每週一戳一次 Supabase REST API 維持活躍。
-# 心跳 commit 推到獨立的 heartbeat 分支，master 保持乾淨、本地不會落後。
+# 免費方案依「資料庫活動」判定閒置：官方要求「每天數次」DB 請求才不會被暫停。
+# 因此每天 ping 3 次（走 PostgREST 實際查 Postgres，非只有閘道回應的 /auth/v1/health）。
+# 心跳 commit 每日一次，推到獨立 heartbeat 分支，master 保持乾淨。
 on:
   schedule:
-    - cron: '0 0 * * 1'
+    - cron: '0 2 * * *'
+    - cron: '0 10 * * *'
+    - cron: '0 18 * * *'
   workflow_dispatch:
 
 permissions:
@@ -16,30 +19,33 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Ping Supabase REST API
+      - name: Ping Supabase REST API（實際查 Postgres）
         env:
           # publishable anon key（已公開於前端 index.html，非機密）
           SUPABASE_URL: 'https://ushwjujxqvonyjumzgkp.supabase.co'
           SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVzaHdqdWp4cXZvbnlqdW16Z2twIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyMTQwNTMsImV4cCI6MjEwMDc5MDA1M30._pOtF2T9FQIT0z0nFNUZq6kyGH9-2hPvORZgmujBOWc'
         run: |
           set -e
-          ENDPOINT="$SUPABASE_URL/rest/v1/periods?select=id&limit=1"
-          code=$(curl -s -o /dev/null -w "%{http_code}" "$ENDPOINT" \
-                 -H "apikey: $SUPABASE_ANON_KEY" \
-                 -H "Authorization: Bearer $SUPABASE_ANON_KEY")
-          echo "Supabase 回應 HTTP $code"
-          if [ "$code" != "200" ]; then
-            echo "::error::Supabase ping 失敗（HTTP $code），專案可能已暫停或連線異常"
-            exit 1
-          fi
-          echo "✅ 專案活躍"
+          # 對多個表逐一查詢，確保是真正的資料庫查詢（含 RLS 評估）
+          for tbl in periods sources historical_events; do
+            ENDPOINT="$SUPABASE_URL/rest/v1/$tbl?select=id&limit=1"
+            code=$(curl -s -o /dev/null -w "%{http_code}" "$ENDPOINT" \
+                   -H "apikey: $SUPABASE_ANON_KEY" \
+                   -H "Authorization: Bearer $SUPABASE_ANON_KEY")
+            echo "查詢 $tbl → HTTP $code"
+            if [ "$code" != "200" ]; then
+              echo "::error::Supabase ping 失敗（$tbl HTTP $code），專案可能已暫停或連線異常"
+              exit 1
+            fi
+          done
+          echo "✅ 專案活躍（資料庫查詢成功）"
 
-      - name: Heartbeat commit（僅推 heartbeat 分支）
+      - name: Heartbeat commit（每日一次，僅推 heartbeat 分支）
+        if: github.event.schedule != '0 10 * * *' && github.event.schedule != '0 18 * * *'
         run: |
           set -e
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          # 取得既有 heartbeat 分支；不存在則建立獨立分支
           if git ls-remote --exit-code --heads origin heartbeat >/dev/null 2>&1; then
             git fetch origin heartbeat
             git checkout -B heartbeat origin/heartbeat
