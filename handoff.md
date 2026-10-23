@@ -53,7 +53,14 @@
 - **敏感性分級**：臺灣事件中 1624／1662／1895／1971 低敏感可直接操作；1947／1949／1987／1996 高敏感（建議由使用者在 Supabase 介面手動改）
 - 史料查詢 API 踩坑（已修）：`bool_and` 忽略 NULL 需改 `NOT EXISTS`＋`COALESCE`；函數參數用 `p_` 前綴避免與欄位同名
 - `historical_events`／`event_sources` 與 sources 同一 Supabase 專案（ushwjujxqvonyjumzgkp）
-- **Supabase 免費方案防暫停（2026-10-09 設置）**：專案曾因閒置 7 天被自動暫停，使用者手動 Unpause 後資料完好（sources 1348／periods 126／institutions 446／events 100／event_sources 168）。已新增 `.github/workflows/keep-supabase-alive.yml`：每週一自動 ping `rest/v1/periods`（防 7 天暫停）＋把心跳 commit 推到**獨立 `heartbeat` 分支**（防 GitHub 60 天停用排程）；master 保持乾淨、本地不會落後
+- **Supabase 免費方案防暫停（2026-10-23 修正完成）**：`.github/workflows/keep-supabase-alive.yml`
+  - ⚠️ **踩坑教訓（重要）**：原「每週 ping 一次」**無效**——專案於 2026-10-16 左右再次被暫停（10/12 ping 成功、10/19 排程因 DNS 解析失敗 exit code 6 而失敗）。官方文件（Project Pausing）載明：判定依據是「**資料庫**活動」，且需「**每天數次**」DB 請求；每週一次遠低於門檻
+  - ✅ 現行設定：**每天 3 次**（UTC 02/10/18）ping 三個表（periods／sources／historical_events），走 PostgREST 實際查 Postgres（含 RLS）
+  - ✅ 心跳 commit 每日 1 次推到**獨立 `heartbeat` 分支**，master 保持乾淨、本地不會落後
+  - ✅ 2026-10-23 使用者手動 Resume 後驗證：資料零損失（sources 1348／periods 126／institutions 446／events 100／event_sources 168）
+  - 📌 排錯線索：專案暫停後 Supabase 會**整個下線網域**，ping 會出現 DNS 解析失敗（curl exit 6），不是 HTTP 540
+  - 📌 `event_sources` 表**沒有 `id` 欄位**（主鍵為 event_id＋source_id 複合），查詢請用 `event_id`
+  - 📌 若日後「每天 3 次」仍被暫停，最終解為升級 Pro（$25/月，付費專案永不暫停）
 
 ## 下一步（具體）
 1. 史料續收候選：阿富汗／大洋洲／中東，開新站先讀 `Import-BhutanToSupabase.ps1` 範本（新增時期的 id 須先確認未佔用，宜用 126 以上空號）
@@ -61,7 +68,7 @@
 
 ## 同步狀態
 - L1 本地：✅ AGENTS.md／handoff.md／sources（不丹 CSV＋腳本＋SQL＋檢測報告）
-- L2 GitHub：✅ 已推送（4f6a7d1）
+- L2 GitHub：✅ 已推送（本次 docs commit，master 乾淨）
 - L3 Obsidian：❌ 未啟用
 
-🕐 最後更新：2026-10-09（Agent big-pickle @ ALYSSALGGRAM）
+🕐 最後更新：2026-10-23（Agent big-pickle @ ALYSSALGGRAM）
